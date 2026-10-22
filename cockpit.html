@@ -4,12 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070b12" />
-  <meta name="description" content="B737NG 驾驶舱程序互动练习。个人学习辅助，运行以公司现行 FCOM/EFB 为准。" />
+  <meta name="description" content="B737NG 驾驶舱沉浸练习。个人学习辅助，运行以公司现行 FCOM/EFB 为准。" />
   <link rel="icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./css/cockpit.css?v=5" />
-  <title>驾驶舱练习 · B737NG</title>
+  <link rel="stylesheet" href="./css/cockpit.css?v=6" />
+  <title>驾驶舱练习 · B737NG 沉浸</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="./js/cockpit-boot.js?v=6"></script>
 </head>
-<body>
+<body class="view-immersive">
   <header class="ck-header">
     <a class="back" href="./index.html" title="返回微课">←</a>
     <h1 id="hdr-title">驾驶舱练习</h1>
@@ -18,33 +26,60 @@
       <button type="button" data-mode="guide">引导练习</button>
       <button type="button" data-mode="explore">自由探索</button>
     </div>
+    <div class="view-tabs" role="tablist" aria-label="视图">
+      <button type="button" id="btn-view-immersive" class="active">沉浸</button>
+      <button type="button" id="btn-view-flat">平面面板</button>
+    </div>
     <p class="sub">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
   </header>
 
   <div class="ck-body">
     <section id="view-home" class="home-screen">
       <div class="card">
-        <h3>B737NG 驾驶舱程序练习</h3>
-        <p class="meta">示意面板 + 引导点击。步骤摘自 FCOM 正常程序（NP），非飞行模拟器，不能替代本场训练与现行手册。</p>
+        <h3>B737NG 驾驶舱 · 沉浸练习</h3>
+        <p class="meta">像坐在机长位：拖动环视，点发光控件按 FCOM 正常程序引导。示意几何 + 开放授权驾驶舱照片，非飞行模拟器，不能替代本场训练与现行手册。</p>
+        <p class="meta">手机：单指拖动环视；可选「开启陀螺仪」。WebGL 不可用时自动切平面面板。</p>
       </div>
       <div id="scenario-list"></div>
       <div class="card">
         <h3>自由探索</h3>
-        <p class="meta">点任意电门查看名称与手册提示，不按顺序。</p>
+        <p class="meta">拖动环视顶板 / MCP / 中央台，点任意热点查看名称与手册提示。</p>
         <div class="btn-row">
           <button type="button" class="btn secondary" id="btn-explore">进入自由探索</button>
         </div>
       </div>
+      <div class="card credits-card">
+        <h3>贴图与授权</h3>
+        <p class="meta" id="home-credits">
+          使用 Wikimedia Commons 照片（CC BY-SA）：
+          <a href="https://commons.wikimedia.org/wiki/File:Cockpit_of_Boeing_737-800,_ATA_Airlines_1.jpg" target="_blank" rel="noopener">Nick Bartolotta — 737-800 ATA</a>；
+          <a href="https://commons.wikimedia.org/wiki/File:Boeing_737_cockpit.jpg" target="_blank" rel="noopener">Milkmandan — 737 cockpit</a>。
+          已调整透明度用于学习示意。三维模型为程序化简化几何，非厂家数据。
+        </p>
+        <p class="meta">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
+      </div>
     </section>
 
-    <section id="view-sim" class="hidden" style="display:flex;flex-direction:column;min-height:0;flex:1">
-      <div class="panel-tabs" id="panel-tabs" style="padding:6px 8px;flex:0 0 auto">
+    <section id="view-sim" class="hidden" style="display:none;flex-direction:column;min-height:0;flex:1">
+      <div class="look-bar" id="look-bar">
+        <button type="button" data-look="forward">前视</button>
+        <button type="button" data-look="overhead">头顶</button>
+        <button type="button" data-look="pedestal">中央台</button>
+        <button type="button" data-look="right">右侧</button>
+        <button type="button" id="btn-gyro" class="gyro">开启陀螺仪</button>
+      </div>
+
+      <div class="panel-tabs flat-only" id="panel-tabs" style="padding:6px 8px;flex:0 0 auto">
         <button type="button" data-panel="overhead" class="active">顶板</button>
         <button type="button" data-panel="glareshield">遮光罩/MCP</button>
         <button type="button" data-panel="main">主仪表</button>
         <button type="button" data-panel="pedestal">中央操纵台</button>
       </div>
+
       <div class="ck-stage" id="ck-stage">
+        <div id="immersive-host" class="immersive-host" aria-label="沉浸驾驶舱"></div>
+
+        <div id="flat-panels" class="flat-panels hidden">
         <!-- Overhead -->
         <div class="panel-view active" data-panel-view="overhead">
           <div class="panel-frame">
@@ -221,6 +256,7 @@
             </div>
           </div>
         </div>
+        </div><!-- /flat-panels -->
       </div>
 
       <aside class="coach" id="coach">
@@ -232,14 +268,15 @@
         <p class="explain" id="coach-explain"></p>
         <p class="feedback" id="coach-feedback"></p>
         <div class="btn-row">
-          <button type="button" class="btn secondary" id="btn-hint">提示面板</button>
+          <button type="button" class="btn secondary" id="btn-hint">看向目标</button>
           <button type="button" class="btn ghost" id="btn-exit-scenario">退出场景</button>
         </div>
-        <p class="meta" style="font-size:.72rem;color:#94a3b8;margin:8px 0 0">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
+        <p class="meta credits-line" id="tex-credits"></p>
+        <p class="meta" style="font-size:.72rem;color:#fbbf24;margin:6px 0 0">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
       </aside>
     </section>
   </div>
 
-  <script src="./js/cockpit.js?v=5"></script>
+  <script src="./js/cockpit.js?v=6" defer></script>
 </body>
 </html>

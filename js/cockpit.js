@@ -1,4 +1,4 @@
-/* B737NG Cockpit procedure trainer */
+/* B737NG Cockpit procedure trainer — immersive + flat fallback */
 (function () {
   const STORAGE = "efb-cockpit-progress-v1";
   const state = {
@@ -9,6 +9,8 @@
     panel: "overhead",
     controlState: {},
     progress: loadProgress(),
+    view: "immersive", // immersive | flat
+    scene: null,
   };
 
   function loadProgress() {
@@ -61,6 +63,7 @@
     if (v === "ON" || v === "NAV" || v === "ARM" || v === "ARMED" || v === "IDLE" || v === "GRD" || v === "AUTO" || v === "亮" || v === "GUARDED" || v === "护盖") {
       el.classList.add("lit");
     }
+    if (state.scene) state.scene.setLit(id, true);
   }
 
   function clearHighlights() {
@@ -73,14 +76,20 @@
     clearHighlights();
     const el = $(`.hot[data-id="${id}"]`);
     if (el) el.classList.add("target");
-    // mark previous done
     const sc = scenarioById(state.scenarioId);
+    const done = [];
     if (sc) {
       for (let i = 0; i < state.stepIndex; i++) {
         const t = sc.steps[i].target;
+        done.push(t);
         const prev = $(`.hot[data-id="${t}"]`);
         if (prev && !prev.classList.contains("target")) prev.classList.add("done-ok");
       }
+    }
+    if (state.scene) {
+      state.scene.setMode(state.mode === "explore" ? "explore" : "guide");
+      state.scene.setDone(done);
+      state.scene.setTarget(id);
     }
   }
 
@@ -117,6 +126,14 @@
     });
   }
 
+  function enterSimChrome(title) {
+    $("#view-home").classList.add("hidden");
+    $("#view-sim").classList.remove("hidden");
+    $("#view-sim").style.display = "flex";
+    $("#hdr-title").textContent = title;
+    ensureScene();
+  }
+
   function startGuide(scenarioId) {
     const sc = scenarioById(scenarioId);
     if (!sc) return;
@@ -124,13 +141,17 @@
     state.scenarioId = scenarioId;
     state.stepIndex = 0;
     state.controlState = {};
-    $("#view-home").classList.add("hidden");
-    $("#view-sim").classList.remove("hidden");
-    $("#view-sim").style.display = "flex";
+    enterSimChrome(sc.title);
     $all("#mode-tabs button").forEach((b) => b.classList.toggle("active", b.dataset.mode === "guide"));
-    $("#hdr-title").textContent = sc.title;
     $("#ck-stage").classList.add("guide-dim");
     setPanel(sc.startPanel || "overhead");
+    if (state.scene) {
+      state.scene.setMode("guide");
+      const snap = sc.startPanel === "pedestal" ? "pedestal"
+        : sc.startPanel === "glareshield" || sc.startPanel === "main" ? "forward"
+        : "overhead";
+      state.scene.lookSnap(snap);
+    }
     renderCoachStep();
     $("#coach-feedback").textContent = "";
     $("#coach-feedback").className = "feedback";
@@ -139,20 +160,23 @@
   function startExplore() {
     state.mode = "explore";
     state.scenarioId = null;
-    $("#view-home").classList.add("hidden");
-    $("#view-sim").classList.remove("hidden");
-    $("#view-sim").style.display = "flex";
+    enterSimChrome("自由探索");
     $all("#mode-tabs button").forEach((b) => b.classList.toggle("active", b.dataset.mode === "explore"));
-    $("#hdr-title").textContent = "自由探索";
     $("#ck-stage").classList.remove("guide-dim");
     clearHighlights();
     setPanel("overhead");
-    $("#coach-progress").textContent = "自由探索模式";
+    if (state.scene) {
+      state.scene.setMode("explore");
+      state.scene.setTarget(null);
+      state.scene.setDone([]);
+      state.scene.lookSnap("forward");
+    }
+    $("#coach-progress").textContent = "自由探索 · 拖动环视，点发光控件";
     $("#coach-bar").style.width = "0%";
     $("#coach-title").textContent = "点任意部件";
     $("#coach-ref").textContent = "系统/NP 提示";
-    $("#coach-action").textContent = "点选顶板、MCP、主仪表或中央台的电门/手柄。";
-    $("#coach-explain").textContent = "显示名称与一句话说明。不强制顺序。";
+    $("#coach-action").textContent = "拖动画面环视顶板 / MCP / 中央台；点青色热点查看说明。";
+    $("#coach-explain").textContent = "不强制顺序。运行以公司现行 FCOM/EFB 为准。";
     $("#coach-feedback").textContent = "";
     $("#coach-feedback").className = "feedback";
   }
@@ -174,6 +198,10 @@
       $("#coach-feedback").textContent = "进度已保存在本机。";
       $("#coach-feedback").className = "feedback ok";
       clearHighlights();
+      if (state.scene) {
+        state.scene.setTarget(null);
+        state.scene.setDone(sc.steps.map((s) => s.target));
+      }
       state.progress.completed[sc.id] = { at: Date.now(), steps: total };
       state.progress.lastScenario = sc.id;
       saveProgress();
@@ -202,6 +230,10 @@
       clearHighlights();
       const el = $(`.hot[data-id="${id}"]`);
       if (el) el.classList.add("target");
+      if (state.scene) {
+        state.scene.setMode("explore");
+        state.scene.setTarget(id);
+      }
       return;
     }
     if (state.mode !== "guide" || !state.scenarioId) return;
@@ -222,7 +254,7 @@
       }, 450);
     } else {
       const want = controlById(step.target);
-      fb.textContent = `还不是这一步。请找：${want ? want.name : step.target}（可点「提示面板」）。`;
+      fb.textContent = `还不是这一步。请找：${want ? want.name : step.target}（可点「看向目标」）。`;
       fb.className = "feedback bad";
       const wrong = $(`.hot[data-id="${id}"]`);
       if (wrong) {
@@ -238,6 +270,69 @@
     });
   }
 
+  function setViewMode(view) {
+    state.view = view;
+    const immersive = view === "immersive";
+    document.body.classList.toggle("view-immersive", immersive);
+    document.body.classList.toggle("view-flat", !immersive);
+    $("#btn-view-immersive")?.classList.toggle("active", immersive);
+    $("#btn-view-flat")?.classList.toggle("active", !immersive);
+    const canvasHost = $("#immersive-host");
+    const flat = $("#flat-panels");
+    if (canvasHost) canvasHost.classList.toggle("hidden", !immersive);
+    if (flat) flat.classList.toggle("hidden", immersive);
+    $("#look-bar")?.classList.toggle("hidden", !immersive);
+    if (immersive) ensureScene();
+  }
+
+  function ensureScene() {
+    if (state.view !== "immersive") return;
+    if (state.scene) {
+      state.scene._resize?.();
+      return;
+    }
+    const host = $("#immersive-host");
+    const api = window.__COCKPIT_SCENE__;
+    if (!host || !api || !api.ready) return;
+    if (!api.detectWebGL()) {
+      fallbackFlat("本机不支持 WebGL，已切换平面面板。");
+      return;
+    }
+    try {
+      state.scene = new api.CockpitScene(host, {
+        onSelect: (id) => onHotTap(id),
+      });
+      if (state.data) state.scene.applyControlPositions(state.data.controls);
+      renderCredits(state.scene.getCredits());
+      // textures may arrive async — refresh credits shortly
+      setTimeout(() => renderCredits(state.scene.getCredits()), 2500);
+    } catch (err) {
+      console.error(err);
+      fallbackFlat("沉浸场景启动失败，已切换平面面板。");
+    }
+  }
+
+  function fallbackFlat(msg) {
+    setViewMode("flat");
+    const fb = $("#coach-feedback");
+    if (fb && msg) {
+      fb.textContent = msg;
+      fb.className = "feedback";
+    }
+  }
+
+  function renderCredits(list) {
+    const el = $("#tex-credits");
+    if (!el) return;
+    if (!list || !list.length) {
+      el.innerHTML = "面板贴图：程序化材质（Wikimedia 照片加载中或不可用）";
+      return;
+    }
+    el.innerHTML = "贴图致谢（已改尺寸/透明度用于学习示意）：" + list.map((c) =>
+      ` <a href="${escapeHtml(c.page)}" target="_blank" rel="noopener">${escapeHtml(c.credit)}</a>`
+    ).join("；");
+  }
+
   function bindChrome() {
     $all("#mode-tabs button").forEach((b) => {
       b.onclick = () => {
@@ -249,6 +344,7 @@
             state.mode = "guide";
             $all("#mode-tabs button").forEach((x) => x.classList.toggle("active", x.dataset.mode === "guide"));
             $("#ck-stage").classList.add("guide-dim");
+            if (state.scene) state.scene.setMode("guide");
             renderCoachStep();
           } else {
             showHome();
@@ -265,31 +361,70 @@
       if (state.mode === "guide" && state.scenarioId) {
         const sc = scenarioById(state.scenarioId);
         const step = sc && sc.steps[state.stepIndex];
-        if (step && step.panel) {
-          setPanel(step.panel);
+        if (step) {
+          if (step.panel) setPanel(step.panel);
           highlightTarget(step.target);
-          $("#coach-feedback").textContent = "已切换到目标所在面板，黄色闪烁处即下一步。";
+          $("#coach-feedback").textContent = state.view === "immersive"
+            ? "已转向目标；青色脉冲热点即下一步。"
+            : "已切换到目标所在面板，黄色闪烁处即下一步。";
           $("#coach-feedback").className = "feedback ok";
         }
       } else if (state.mode === "explore") {
-        $("#coach-feedback").textContent = "自由探索：直接点电门即可。";
+        $("#coach-feedback").textContent = "自由探索：拖动环视，点热点即可。";
         $("#coach-feedback").className = "feedback";
       }
     };
+
+    $("#btn-view-immersive")?.addEventListener("click", () => setViewMode("immersive"));
+    $("#btn-view-flat")?.addEventListener("click", () => setViewMode("flat"));
+
+    $all("[data-look]").forEach((b) => {
+      b.onclick = () => {
+        if (state.scene) state.scene.lookSnap(b.dataset.look);
+      };
+    });
+
+    $("#btn-gyro")?.addEventListener("click", async () => {
+      if (!state.scene) return;
+      const ok = await state.scene.enableGyro(true);
+      $("#coach-feedback").textContent = ok
+        ? "陀螺仪已开启（再拖动画面会暂时关闭）。"
+        : "无法开启陀螺仪（需 HTTPS 且浏览器允许运动权限）。";
+      $("#coach-feedback").className = ok ? "feedback ok" : "feedback bad";
+    });
   }
 
   async function init() {
-    const res = await fetch("./data/cockpit-scenarios.json?v=5", { cache: "no-cache" });
+    const res = await fetch("./data/cockpit-scenarios.json?v=6", { cache: "no-cache" });
     if (!res.ok) throw new Error("场景数据 HTTP " + res.status);
     state.data = await res.json();
     bindHotspots();
     bindChrome();
+
+    // Wait briefly for scene module
+    const waitScene = () => new Promise((resolve) => {
+      if (window.__COCKPIT_SCENE__?.ready) return resolve();
+      let n = 0;
+      const t = setInterval(() => {
+        n++;
+        if (window.__COCKPIT_SCENE__?.ready || n > 40) {
+          clearInterval(t);
+          resolve();
+        }
+      }, 50);
+    });
+    await waitScene();
+
+    const canGL = window.__COCKPIT_SCENE__?.detectWebGL?.();
+    if (canGL) setViewMode("immersive");
+    else setViewMode("flat");
+
     showHome();
   }
 
-  window.__EFB_COCKPIT__ = { state, startGuide, startExplore };
+  window.__EFB_COCKPIT__ = { state, startGuide, startExplore, onHotTap };
 
   init().catch((err) => {
-    document.body.innerHTML = `<div style="padding:24px;color:#fca5a5">驾驶舱练习加载失败：${escapeHtml(err.message)}</div>`;
+    document.body.innerHTML = `<div style="padding:24px;color:#fca5a5">驾驶舱练习加载失败：${escapeHtml(err.message)}<p style="color:#94a3b8;font-size:.85rem">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p></div>`;
   });
 })();
