@@ -244,7 +244,7 @@
         <h2>驾驶舱练习</h2>
         <div class="muted">B737NG 示意面板 · 按 FCOM 正常程序引导点击</div>
         <div class="btn-row">
-          <a class="btn" href="./cockpit.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">打开驾驶舱练习</a>
+          <a class="btn" href="./cockpit.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">打开沉浸驾驶舱</a>
         </div>
       </div>
       <div class="card">
@@ -262,7 +262,7 @@
   function renderCourses() {
     const el = $("#view-courses");
     let html = `<div class="card"><h2>全部课程</h2><div class="muted">共 ${lessons().length} 节 · 按科学顺序编排</div></div>
-      <div class="card"><h2>驾驶舱练习</h2><div class="muted">互动面板 · FCOM NP 引导</div><div class="btn-row"><a class="btn secondary" href="./cockpit.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">打开驾驶舱</a></div></div>`;
+      <div class="card"><h2>驾驶舱练习</h2><div class="muted">沉浸内舱 · 拖动环视 · FCOM NP 引导</div><div class="btn-row"><a class="btn secondary" href="./cockpit.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">打开驾驶舱</a></div></div>`;
     let lastMod = null;
     for (const l of lessons()) {
       if (l.module !== lastMod) {
@@ -535,7 +535,7 @@
   async function init() {
     const boot = $("#boot-status");
     if (boot) boot.textContent = "正在加载课程数据…";
-    const res = await fetch("./data/lessons.json?v=5", { cache: "no-cache" });
+    const res = await fetch("./data/lessons.json?v=6", { cache: "no-cache" });
     if (!res.ok) throw new Error("课程数据 HTTP " + res.status);
     state.data = await res.json();
     if (!state.data || !Array.isArray(state.data.lessons) || !state.data.lessons.length) {
@@ -552,7 +552,7 @@
     setView("today");
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js?v=5").then((reg) => {
+      navigator.serviceWorker.register("./sw.js?v=6").then((reg) => {
         reg.update().catch(() => {});
       }).catch(() => {});
     }
