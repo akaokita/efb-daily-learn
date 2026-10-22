@@ -1,2 +1,9 @@
-# efb-daily-learn
-B737 EFB personal daily micro-lessons (study aid only; company EFB prevails)
+# B737 EFB 每日微课
+
+个人学习辅助（手机浏览器可打开）。飞行运行以公司现行有效版手册/EFB 为准。
+
+## 使用
+
+打开本仓库的 GitHub Pages 地址即可每日学习。
+
+进度与打卡保存在你手机浏览器的本地存储中。
