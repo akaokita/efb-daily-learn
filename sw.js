@@ -6,21 +6,15 @@ const ASSETS = [
   "./js/app.js",
   "./data/lessons.json",
   "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png"
+  "./icons/icon.svg"
 ];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE).then(async (c) => {
       for (const url of ASSETS) {
-        try {
-          await c.add(url);
-        } catch (err) {
-          // skip missing optional assets so SW can still activate
-          console.warn("SW cache skip", url, err);
-        }
+        try { await c.add(url); }
+        catch (err) { console.warn("SW cache skip", url, err); }
       }
       await self.skipWaiting();
     })
