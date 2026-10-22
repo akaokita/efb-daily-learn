@@ -238,9 +238,14 @@ body.view-immersive .flat-panels { display: none !important; }
 }
 .immersive-host {
   position: absolute; inset: 0;
-  background: #05080f;
+  min-height: 240px;
+  background: #1a2332;
   overflow: hidden;
   z-index: 1;
+}
+body.view-immersive .ck-stage {
+  position: relative;
+  min-height: min(58vh, 560px);
 }
 .immersive-host canvas {
   width: 100% !important; height: 100% !important;

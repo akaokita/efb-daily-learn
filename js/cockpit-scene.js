@@ -173,7 +173,7 @@ export class CockpitScene {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.setSize(w, h, false);
-    this.renderer.setClearColor(0x05080f, 1);
+    this.renderer.setClearColor(0x1a2332, 1);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.container.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.display = 'block';
@@ -182,9 +182,10 @@ export class CockpitScene {
     this.renderer.domElement.style.touchAction = 'none';
 
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x05080f, 0.045);
+    this.scene.background = new THREE.Color(0x1a2332);
+    this.scene.fog = new THREE.Fog(0x1a2332, 6, 22);
 
-    this.camera = new THREE.PerspectiveCamera(72, w / h, 0.05, 40);
+    this.camera = new THREE.PerspectiveCamera(72, Math.max(w, 1) / Math.max(h, 1), 0.05, 40);
     // CAPT seat eye point
     this.camPos = new THREE.Vector3(-0.42, 1.18, 0.42);
     this.camera.position.copy(this.camPos);
@@ -192,23 +193,29 @@ export class CockpitScene {
     this.raycaster = new THREE.Raycaster();
     this.pointer = new THREE.Vector2();
 
-    const amb = new THREE.AmbientLight(0x6a7a90, 0.35);
+    const amb = new THREE.AmbientLight(0xb8c4d6, 1.15);
     this.scene.add(amb);
-    const key = new THREE.DirectionalLight(0xffe6c8, 0.55);
+    const key = new THREE.DirectionalLight(0xfff0dd, 1.1);
     key.position.set(-1.2, 2.2, 1.5);
     this.scene.add(key);
-    const fill = new THREE.DirectionalLight(0x88aacc, 0.25);
+    const fill = new THREE.DirectionalLight(0xa8c8e8, 0.65);
     fill.position.set(1.5, 1.2, -0.5);
     this.scene.add(fill);
+    const hemi = new THREE.HemisphereLight(0x9eb6ff, 0x2a2018, 0.55);
+    this.scene.add(hemi);
     // Instrument glow
-    const glow = new THREE.PointLight(0x66ccff, 0.9, 3.5, 2);
+    const glow = new THREE.PointLight(0x66ccff, 1.4, 4.5, 2);
     glow.position.set(0, 0.95, -0.7);
     this.scene.add(glow);
-    const ohLight = new THREE.PointLight(0xffaa66, 0.45, 2.8, 2);
+    const ohLight = new THREE.PointLight(0xffcc88, 0.9, 3.5, 2);
     ohLight.position.set(0, 1.55, 0.1);
     this.scene.add(ohLight);
 
     window.addEventListener('resize', () => this._resize());
+    if (typeof ResizeObserver !== 'undefined') {
+      this._ro = new ResizeObserver(() => this._resize());
+      this._ro.observe(this.container);
+    }
   }
 
   _loadTexture(key) {
@@ -236,10 +243,10 @@ export class CockpitScene {
     this.root = root;
     this.scene.add(root);
 
-    const dark = mat(0x1a1f28, { roughness: 0.85, metalness: 0.25 });
-    const darker = mat(0x0e1218, { roughness: 0.9, metalness: 0.15 });
-    const metal = mat(0x3a4558, { roughness: 0.45, metalness: 0.55 });
-    const beige = mat(0x2a241c, { roughness: 0.8, metalness: 0.05 });
+    const dark = mat(0x3a4558, { roughness: 0.75, metalness: 0.22 });
+    const darker = mat(0x2a3344, { roughness: 0.85, metalness: 0.12 });
+    const metal = mat(0x6a7a90, { roughness: 0.4, metalness: 0.5 });
+    const beige = mat(0x5a4a38, { roughness: 0.75, metalness: 0.05 });
     const glass = mat(0x88aacc, { roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.22, side: THREE.DoubleSide });
     const screen = mat(0x0a1a22, { roughness: 0.35, metalness: 0.2, emissive: 0x1a4a5a, emissiveIntensity: 0.55 });
     const seat = mat(0x1c2430, { roughness: 0.9, metalness: 0.05 });
@@ -607,9 +614,12 @@ export class CockpitScene {
   }
 
   _resize() {
-    const w = this.container.clientWidth || window.innerWidth;
-    const h = Math.max(1, this.container.clientHeight || window.innerHeight);
-    this.camera.aspect = w / h;
+    const rect = this.container.getBoundingClientRect();
+    let w = Math.floor(rect.width) || this.container.clientWidth || window.innerWidth;
+    let h = Math.floor(rect.height) || this.container.clientHeight || 0;
+    if (h < 80) h = Math.max(240, Math.floor(window.innerHeight * 0.55));
+    if (w < 80) w = Math.max(320, window.innerWidth);
+    this.camera.aspect = w / Math.max(h, 1);
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h, false);
   }

@@ -131,7 +131,11 @@
     $("#view-sim").classList.remove("hidden");
     $("#view-sim").style.display = "flex";
     $("#hdr-title").textContent = title;
-    ensureScene();
+    // layout then mount / resize WebGL
+    requestAnimationFrame(() => {
+      ensureScene();
+      requestAnimationFrame(() => ensureScene());
+    });
   }
 
   function startGuide(scenarioId) {
@@ -287,13 +291,24 @@
 
   function ensureScene() {
     if (state.view !== "immersive") return;
+    const host = $("#immersive-host");
+    if (!host) return;
+    // Wait until sim layout is visible so canvas gets real size
+    const sim = $("#view-sim");
+    if (sim && (sim.style.display === "none" || sim.classList.contains("hidden"))) return;
+
     if (state.scene) {
-      state.scene._resize?.();
+      requestAnimationFrame(() => {
+        state.scene._resize?.();
+        requestAnimationFrame(() => state.scene._resize?.());
+      });
       return;
     }
-    const host = $("#immersive-host");
     const api = window.__COCKPIT_SCENE__;
-    if (!host || !api || !api.ready) return;
+    if (!api || !api.ready) {
+      fallbackFlat("三维引擎未加载成功（请检查网络后刷新）。已切换平面面板，仍可点选练习。");
+      return;
+    }
     if (!api.detectWebGL()) {
       fallbackFlat("本机不支持 WebGL，已切换平面面板。");
       return;
@@ -304,7 +319,10 @@
       });
       if (state.data) state.scene.applyControlPositions(state.data.controls);
       renderCredits(state.scene.getCredits());
-      // textures may arrive async — refresh credits shortly
+      requestAnimationFrame(() => {
+        state.scene._resize?.();
+        requestAnimationFrame(() => state.scene._resize?.());
+      });
       setTimeout(() => renderCredits(state.scene.getCredits()), 2500);
     } catch (err) {
       console.error(err);
@@ -395,29 +413,38 @@
   }
 
   async function init() {
-    const res = await fetch("./data/cockpit-scenarios.json?v=6", { cache: "no-cache" });
+    const res = await fetch("./data/cockpit-scenarios.json?v=7", { cache: "no-cache" });
     if (!res.ok) throw new Error("场景数据 HTTP " + res.status);
     state.data = await res.json();
     bindHotspots();
     bindChrome();
 
-    // Wait briefly for scene module
+    // Wait for scene module (local three vendor; allow slower phones)
     const waitScene = () => new Promise((resolve) => {
-      if (window.__COCKPIT_SCENE__?.ready) return resolve();
+      if (window.__COCKPIT_SCENE__?.ready) return resolve(true);
       let n = 0;
       const t = setInterval(() => {
         n++;
-        if (window.__COCKPIT_SCENE__?.ready || n > 40) {
+        if (window.__COCKPIT_SCENE__?.ready) {
           clearInterval(t);
-          resolve();
+          resolve(true);
+        } else if (n > 100) {
+          clearInterval(t);
+          resolve(false);
         }
       }, 50);
     });
-    await waitScene();
+    const sceneReady = await waitScene();
 
-    const canGL = window.__COCKPIT_SCENE__?.detectWebGL?.();
+    const canGL = sceneReady && window.__COCKPIT_SCENE__?.detectWebGL?.();
+    // Prefer immersive only when engine is ready; else flat with a clear reason
     if (canGL) setViewMode("immersive");
-    else setViewMode("flat");
+    else {
+      setViewMode("flat");
+      if (!sceneReady) {
+        console.warn("cockpit-scene module not ready");
+      }
+    }
 
     showHome();
   }
