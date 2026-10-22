@@ -413,7 +413,7 @@
   }
 
   async function init() {
-    const res = await fetch("./data/cockpit-scenarios.json?v=7", { cache: "no-cache" });
+    const res = await fetch("./data/cockpit-scenarios.json?v=8", { cache: "no-cache" });
     if (!res.ok) throw new Error("场景数据 HTTP " + res.status);
     state.data = await res.json();
     bindHotspots();
