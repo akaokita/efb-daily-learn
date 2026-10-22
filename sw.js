@@ -1,4 +1,4 @@
-const CACHE = "efb-learn-v5";
+const CACHE = "efb-learn-v6";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,6 +7,8 @@ const ASSETS = [
   "./css/cockpit.css",
   "./js/app.js",
   "./js/cockpit.js",
+  "./js/cockpit-boot.js",
+  "./js/cockpit-scene.js",
   "./data/lessons.json",
   "./data/cockpit-scenarios.json",
   "./manifest.webmanifest",
@@ -37,12 +39,18 @@ self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+  // never cache cross-origin (Three CDN / Wikimedia)
+  if (url.origin !== self.location.origin) {
+    e.respondWith(fetch(req).catch(() => caches.match(req)));
+    return;
+  }
   const path = url.pathname;
   const networkFirst =
     req.mode === "navigate" ||
     path.endsWith(".html") ||
     path.endsWith(".js") ||
     path.endsWith(".json") ||
+    path.endsWith(".css") ||
     path.endsWith("/") ||
     path.endsWith("efb-daily-learn");
 

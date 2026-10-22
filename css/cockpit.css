@@ -203,3 +203,80 @@ button { font: inherit; color: inherit; }
 .scenario-card .steps-n { color: var(--accent); font-weight: 700; }
 
 .hidden { display: none !important; }
+
+
+/* —— Immersive (沉浸) —— */
+.view-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.view-tabs button {
+  min-height: 36px; padding: 4px 12px; border-radius: 999px;
+  border: 1px solid var(--bezel); background: var(--panel2); color: var(--muted); cursor: pointer;
+}
+.view-tabs button.active { background: #14532d; color: #bbf7d0; border-color: #22c55e; }
+
+.look-bar {
+  flex: 0 0 auto;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  padding: 6px 8px;
+  background: rgba(7,11,18,.85);
+  border-bottom: 1px solid var(--bezel);
+  z-index: 25;
+}
+.look-bar button {
+  min-height: 36px; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid #334155; background: #1e293b; color: #e2e8f0; cursor: pointer;
+  font-size: .78rem;
+}
+.look-bar button.gyro { border-color: #0ea5e9; color: #7dd3fc; }
+
+body.view-immersive .flat-only { display: none !important; }
+body.view-flat .look-bar { display: none !important; }
+body.view-flat .immersive-host { display: none !important; }
+body.view-immersive .flat-panels { display: none !important; }
+
+.ck-stage {
+  position: relative;
+}
+.immersive-host {
+  position: absolute; inset: 0;
+  background: #05080f;
+  overflow: hidden;
+  z-index: 1;
+}
+.immersive-host canvas {
+  width: 100% !important; height: 100% !important;
+  display: block;
+  touch-action: none;
+}
+.flat-panels {
+  position: relative; z-index: 2;
+  padding-bottom: 8px;
+}
+
+body.view-immersive .ck-stage {
+  overflow: hidden;
+  padding: 0;
+}
+body.view-immersive .coach {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(56, 189, 248, 0.25);
+  max-height: min(38vh, 300px);
+}
+.credits-line { font-size: .65rem !important; color: #94a3b8 !important; line-height: 1.35; }
+.credits-line a { color: #7dd3fc; }
+.credits-card a { color: #7dd3fc; }
+
+@media (min-width: 900px) {
+  body.view-immersive #view-sim {
+    flex-direction: row !important;
+  }
+  body.view-immersive .ck-stage { flex: 1; }
+  body.view-immersive .coach {
+    width: min(360px, 38vw);
+    max-height: none;
+    border-top: none;
+    border-left: 1px solid rgba(56, 189, 248, 0.25);
+  }
+  body.view-immersive .look-bar { width: 100%; }
+}

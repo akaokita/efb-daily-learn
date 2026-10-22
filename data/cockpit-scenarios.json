@@ -1,74 +1,1068 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "disclaimer": "个人学习辅助，运行以公司现行 FCOM/EFB 为准。",
   "aircraft": "B737NG",
   "controls": [
-    {"id": "irs_l", "name": "左 IRS 方式选择器", "panel": "overhead", "zone": "导航/IRS", "note": "飞行前初始准备：先 OFF 再 NAV，核实 ALIGN。FCOM NP.21.1", "labels": ["OFF", "ALIGN", "NAV"]},
-    {"id": "irs_r", "name": "右 IRS 方式选择器", "panel": "overhead", "zone": "导航/IRS", "note": "建议每次飞行前完全校准。FCOM NP.21.1", "labels": ["OFF", "ALIGN", "NAV"]},
-    {"id": "eec_1", "name": "1发 EEC 电门", "panel": "overhead", "zone": "发动机面板", "note": "发动机面板设置：EEC 电门 ON；核实 REVERSER / ENGINE CONTROL 灯灭。FCOM NP.21.2", "labels": ["ON", "OFF"]},
-    {"id": "eec_2", "name": "2发 EEC 电门", "panel": "overhead", "zone": "发动机面板", "note": "两侧 EEC 均置于 ON。FCOM NP.21.2", "labels": ["ON", "OFF"]},
-    {"id": "pass_oxy", "name": "旅客氧气电门（护盖）", "panel": "overhead", "zone": "氧气面板", "note": "护盖盖好；启用会使旅客氧气面罩放出。核实 PASS OXY ON 灯灭。FCOM NP.21.2", "labels": ["护盖"]},
-    {"id": "gear_lights", "name": "起落架指示灯", "panel": "main", "zone": "起落架指示", "note": "飞行前初始准备：起落架指示器灯核实亮。FCOM NP.21.2", "labels": ["DN绿"]},
-    {"id": "flt_recorder", "name": "飞行记录器电门（护盖）", "panel": "overhead", "zone": "记录器", "note": "护盖盖好；核实 OFF 指示灯亮（电源接通阶段典型状态）。FCOM NP.21.2", "labels": ["护盖"]},
-    {"id": "mach_warn_test", "name": "马赫空速警告测试电门", "panel": "main", "zone": "警告测试", "note": "按压，一次一个；核实咔嗒声响。FCOM NP.21.2–21.3", "labels": ["TEST1", "TEST2"]},
-    {"id": "stall_warn_test", "name": "失速警告测试电门", "panel": "main", "zone": "警告测试", "note": "按压并保持，一次一个；核实杆抖。需 AC 转换汇流条通电约4分钟。FCOM NP.21.3", "labels": ["TEST1", "TEST2"]},
-    {"id": "evac_switch", "name": "紧急撤离起动电门（护盖）", "panel": "overhead", "zone": "撤离", "note": "护盖盖好；核实 EVAC 灯灭。FCOM NP.21.3", "labels": ["护盖"]},
-    {"id": "yaw_damper", "name": "偏航阻尼器电门", "panel": "overhead", "zone": "飞行操纵", "note": "飞行前程序-副驾驶：YAW DAMPER ON，灯灭。FCOM NP.21.11", "labels": ["ON", "OFF"]},
-    {"id": "fuel_crossfeed", "name": "交输供油选择器", "panel": "overhead", "zone": "燃油", "note": "飞行前：交输关闭，VALVE OPEN 灯灭。FCOM NP.21.12", "labels": ["关", "开"]},
-    {"id": "fuel_ctr_l", "name": "左中央燃油泵", "panel": "overhead", "zone": "燃油", "note": "起动前：中央油箱>453kg 时左右中央泵 ON。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "fuel_ctr_r", "name": "右中央燃油泵", "panel": "overhead", "zone": "燃油", "note": "与左中央泵同条件开启。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "fuel_fwd_1", "name": "1发前燃油泵", "panel": "overhead", "zone": "燃油", "note": "起动前：前、后燃油泵电门 ON，低压灯灭。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "fuel_aft_1", "name": "1发后燃油泵", "panel": "overhead", "zone": "燃油", "note": "起动前主油箱泵 ON。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "fuel_fwd_2", "name": "2发前燃油泵", "panel": "overhead", "zone": "燃油", "note": "起动前主油箱泵 ON。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "fuel_aft_2", "name": "2发后燃油泵", "panel": "overhead", "zone": "燃油", "note": "起动前主油箱泵 ON。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "batt", "name": "电瓶电门（护盖）", "panel": "overhead", "zone": "电气", "note": "飞行前：电瓶电门护盖盖好。FCOM NP.21.12", "labels": ["护盖"]},
-    {"id": "apu_sw", "name": "APU 电门", "panel": "overhead", "zone": "APU", "note": "飞行前按需 START；引气前需运转约2分钟。FCOM NP.21.14", "labels": ["OFF", "ON", "START"]},
-    {"id": "apu_gen", "name": "APU 发电机汇流条电门", "panel": "overhead", "zone": "电气", "note": "APU GEN OFF BUS 灯亮时置于 ON。FCOM NP.21.14", "labels": ["ON"]},
-    {"id": "emer_exit_lt", "name": "紧急出口灯电门（护盖）", "panel": "overhead", "zone": "灯光/应急", "note": "护盖盖好；NOT ARMED 灯灭。FCOM NP.21.15", "labels": ["护盖"]},
-    {"id": "window_heat", "name": "窗加温电门", "panel": "overhead", "zone": "防冰/窗", "note": "起飞前至少10分钟 ON。FCOM NP.21.15", "labels": ["ON", "OFF"]},
-    {"id": "wing_anti_ice", "name": "机翼防冰电门", "panel": "overhead", "zone": "防冰", "note": "飞行前 OFF；滑行前按需。FCOM NP.21.15 / NP.21.32", "labels": ["ON", "OFF"]},
-    {"id": "eng_anti_ice_1", "name": "1发防冰电门", "panel": "overhead", "zone": "防冰", "note": "飞行前 OFF。FCOM NP.21.15", "labels": ["ON", "OFF"]},
-    {"id": "eng_anti_ice_2", "name": "2发防冰电门", "panel": "overhead", "zone": "防冰", "note": "飞行前 OFF。FCOM NP.21.15", "labels": ["ON", "OFF"]},
-    {"id": "hyd_eng_a", "name": "A系统发动机液压泵", "panel": "overhead", "zone": "液压", "note": "飞行前 ON（低压灯亮，因尚未增压）。FCOM NP.21.16", "labels": ["ON", "OFF"]},
-    {"id": "hyd_eng_b", "name": "B系统发动机液压泵", "panel": "overhead", "zone": "液压", "note": "飞行前 ON。FCOM NP.21.16", "labels": ["ON", "OFF"]},
-    {"id": "hyd_elec_a", "name": "A系统电动液压泵", "panel": "overhead", "zone": "液压", "note": "飞行前 OFF；起动前（无推出或旁通销已插）ON 增压。FCOM NP.21.16 / NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "hyd_elec_b", "name": "B系统电动液压泵", "panel": "overhead", "zone": "液压", "note": "起动前增压关键电门之一。推出且无旁通销时仅开 B 电动泵。FCOM NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "pack_l", "name": "左空调组件电门", "panel": "overhead", "zone": "空调", "note": "飞行前 AUTO/HIGH；发动机起动前 OFF。FCOM NP.21.16 / NP.21.31", "labels": ["OFF", "AUTO", "HIGH"]},
-    {"id": "pack_r", "name": "右空调组件电门", "panel": "overhead", "zone": "空调", "note": "与左组件同程序。FCOM NP.21.16 / NP.21.31", "labels": ["OFF", "AUTO", "HIGH"]},
-    {"id": "isol_valve", "name": "隔离活门", "panel": "overhead", "zone": "空调/引气", "note": "飞行前 OPEN；滑行前 AUTO。FCOM NP.21.16 / NP.21.32", "labels": ["CLOSE", "AUTO", "OPEN"]},
-    {"id": "bleed_1", "name": "1发引气电门", "panel": "overhead", "zone": "引气", "note": "飞行前 ON。FCOM NP.21.16", "labels": ["ON", "OFF"]},
-    {"id": "bleed_apu", "name": "APU 引气电门", "panel": "overhead", "zone": "引气", "note": "飞行前 ON（双引气灯可能亮）；滑行前 OFF。FCOM NP.21.16 / NP.21.32", "labels": ["ON", "OFF"]},
-    {"id": "bleed_2", "name": "2发引气电门", "panel": "overhead", "zone": "引气", "note": "飞行前 ON。FCOM NP.21.16", "labels": ["ON", "OFF"]},
-    {"id": "press_mode", "name": "增压方式选择器", "panel": "overhead", "zone": "座舱增压", "note": "飞行前 AUTO。FCOM NP.21.17", "labels": ["AUTO", "ALTN", "MAN"]},
-    {"id": "ignition", "name": "点火选择电门", "panel": "overhead", "zone": "发动机起动", "note": "IGN L 或 R；下次起动更换。FCOM NP.21.17", "labels": ["IGN L", "BOTH", "IGN R"]},
-    {"id": "eng_start_1", "name": "1发起动电门", "panel": "overhead", "zone": "发动机起动", "note": "飞行前 OFF；起动放 GRD；约56%N2 回 OFF；滑行前可 CONT。FCOM NP.21.17 / NP.21.31–32", "labels": ["GRD", "OFF", "CONT", "FLT"]},
-    {"id": "eng_start_2", "name": "2发起动电门", "panel": "overhead", "zone": "发动机起动", "note": "与1发相同逻辑。FCOM NP.21.31", "labels": ["GRD", "OFF", "CONT", "FLT"]},
-    {"id": "anti_coll", "name": "防撞灯电门", "panel": "overhead", "zone": "外部灯光", "note": "飞行前 OFF；起动前 ON。FCOM NP.21.17 / NP.21.28", "labels": ["ON", "OFF"]},
-    {"id": "landing_lt", "name": "着陆灯电门", "panel": "overhead", "zone": "外部灯光", "note": "飞行前 OFF/收上。FCOM NP.21.17", "labels": ["ON", "OFF"]},
-    {"id": "taxi_lt", "name": "滑行灯电门", "panel": "overhead", "zone": "外部灯光", "note": "飞行前 OFF。FCOM NP.21.17", "labels": ["ON", "OFF"]},
-    {"id": "mcp_at", "name": "自动油门预位电门", "panel": "glareshield", "zone": "MCP", "note": "起动前：AUTOTHROTTLE ARM。FCOM NP.21.27", "labels": ["ARM", "OFF"]},
-    {"id": "mcp_spd", "name": "空速/马赫选择器（MCP）", "panel": "glareshield", "zone": "MCP", "note": "起动前设为 V2。FCOM NP.21.27", "labels": ["IAS"]},
-    {"id": "mcp_lnav", "name": "LNAV 电门", "panel": "glareshield", "zone": "MCP", "note": "起动前按需预位 LNAV。FCOM NP.21.27", "labels": ["LNAV"]},
-    {"id": "mcp_vnav", "name": "VNAV 电门", "panel": "glareshield", "zone": "MCP", "note": "起动前预位 VNAV。FCOM NP.21.27", "labels": ["VNAV"]},
-    {"id": "mcp_hdg", "name": "航向选择器（MCP）", "panel": "glareshield", "zone": "MCP", "note": "起始航向调定。FCOM NP.21.27", "labels": ["HDG"]},
-    {"id": "mcp_alt", "name": "高度选择器（MCP）", "panel": "glareshield", "zone": "MCP", "note": "起始高度调定。FCOM NP.21.27", "labels": ["ALT"]},
-    {"id": "mcp_fd_l", "name": "左飞行指引仪电门", "panel": "glareshield", "zone": "MCP", "note": "飞行前程序-机长：FD ON（先 PF 一侧）。FCOM NP.21.22", "labels": ["ON", "OFF"]},
-    {"id": "mcp_fd_r", "name": "右飞行指引仪电门", "panel": "glareshield", "zone": "MCP", "note": "两侧 FD 按需。FCOM NP.21.22", "labels": ["ON", "OFF"]},
-    {"id": "mcp_course_l", "name": "左航道窗", "panel": "glareshield", "zone": "MCP", "note": "航道设定。FCOM NP.21.22", "labels": ["CRS"]},
-    {"id": "gear_lever", "name": "起落架手柄", "panel": "main", "zone": "起落架", "note": "飞行前 DN；核实绿灯亮、红灯灭。FCOM NP.21.20", "labels": ["UP", "OFF", "DN"]},
-    {"id": "autobrake", "name": "自动刹车选择电门", "panel": "main", "zone": "刹车", "note": "飞行前 RTO。FCOM NP.21.20", "labels": ["RTO", "OFF", "1", "2", "3", "MAX"]},
-    {"id": "flap_lever", "name": "襟翼手柄", "panel": "pedestal", "zone": "襟翼", "note": "构形按起飞简令；本练习仅识别位置。参考 NP 构形检查原理 NP.11.1", "labels": ["UP", "1", "5", "15", "30", "40"]},
-    {"id": "speedbrake", "name": "扰流板手柄", "panel": "pedestal", "zone": "扰流板", "note": "地面收进位；详细以检查单为准。", "labels": ["DOWN", "ARMED", "FLIGHT", "UP"]},
-    {"id": "park_brake", "name": "停留刹车", "panel": "pedestal", "zone": "刹车", "note": "飞行前按需；机长程序中设置并核实警告灯。FCOM NP.21.3 / NP.21.26", "labels": ["SET", "OFF"]},
-    {"id": "fuel_lever_1", "name": "1发燃油控制手柄", "panel": "pedestal", "zone": "油门台", "note": "起动：N1转动且N2≥25%（或最大冷转且N2≥20%）移至 IDLE；监控至慢车稳定。FCOM NP.21.30–31", "labels": ["CUTOFF", "IDLE"]},
-    {"id": "fuel_lever_2", "name": "2发燃油控制手柄", "panel": "pedestal", "zone": "油门台", "note": "与1发相同起动逻辑。FCOM NP.21.31", "labels": ["CUTOFF", "IDLE"]},
-    {"id": "throttle_1", "name": "1发油门杆", "panel": "pedestal", "zone": "油门台", "note": "起动过程保持慢车区监控；非本练习强制操作项。", "labels": ["THR"]},
-    {"id": "throttle_2", "name": "2发油门杆", "panel": "pedestal", "zone": "油门台", "note": "与1发相同。", "labels": ["THR"]},
-    {"id": "stab_trim", "name": "安定面配平轮", "panel": "pedestal", "zone": "配平", "note": "起动前设定起飞配平并核实绿区。FCOM NP.21.28", "labels": ["TRIM"]},
-    {"id": "transponder", "name": "应答机面板", "panel": "pedestal", "zone": "通讯/监视", "note": "飞行前设置；推出时按需。FCOM NP.21.21 / NP.21.29", "labels": ["STBY", "XPNDR"]},
-    {"id": "fire_test", "name": "过热/火警测试电门", "panel": "overhead", "zone": "防火", "note": "飞行前每日检查：FAULT/INOP 与 OVHT/FIRE 位测试。FCOM NP.21.13", "labels": ["TEST"]},
-    {"id": "master_caution", "name": "主警戒灯/复位", "panel": "glareshield", "zone": "警告", "note": "系统灯光用于起动前核实构形。FCOM NP.11.1", "labels": ["MC"]},
-    {"id": "fire_warn", "name": "主火警灯", "panel": "glareshield", "zone": "警告", "note": "火警测试时按压可消音熄灯。FCOM NP.21.13", "labels": ["FIRE"]}
+    {
+      "id": "irs_l",
+      "name": "左 IRS 方式选择器",
+      "panel": "overhead",
+      "zone": "导航/IRS",
+      "note": "飞行前初始准备：先 OFF 再 NAV，核实 ALIGN。FCOM NP.21.1",
+      "labels": [
+        "OFF",
+        "ALIGN",
+        "NAV"
+      ],
+      "pos": [
+        -0.35,
+        1.62,
+        -0.15
+      ]
+    },
+    {
+      "id": "irs_r",
+      "name": "右 IRS 方式选择器",
+      "panel": "overhead",
+      "zone": "导航/IRS",
+      "note": "建议每次飞行前完全校准。FCOM NP.21.1",
+      "labels": [
+        "OFF",
+        "ALIGN",
+        "NAV"
+      ],
+      "pos": [
+        0.35,
+        1.62,
+        -0.15
+      ]
+    },
+    {
+      "id": "eec_1",
+      "name": "1发 EEC 电门",
+      "panel": "overhead",
+      "zone": "发动机面板",
+      "note": "发动机面板设置：EEC 电门 ON；核实 REVERSER / ENGINE CONTROL 灯灭。FCOM NP.21.2",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.48,
+        1.6,
+        0.08
+      ]
+    },
+    {
+      "id": "eec_2",
+      "name": "2发 EEC 电门",
+      "panel": "overhead",
+      "zone": "发动机面板",
+      "note": "两侧 EEC 均置于 ON。FCOM NP.21.2",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.48,
+        1.6,
+        0.08
+      ]
+    },
+    {
+      "id": "pass_oxy",
+      "name": "旅客氧气电门（护盖）",
+      "panel": "overhead",
+      "zone": "氧气面板",
+      "note": "护盖盖好；启用会使旅客氧气面罩放出。核实 PASS OXY ON 灯灭。FCOM NP.21.2",
+      "labels": [
+        "护盖"
+      ],
+      "pos": [
+        -0.55,
+        1.5,
+        0.1
+      ]
+    },
+    {
+      "id": "gear_lights",
+      "name": "起落架指示灯",
+      "panel": "main",
+      "zone": "起落架指示",
+      "note": "飞行前初始准备：起落架指示器灯核实亮。FCOM NP.21.2",
+      "labels": [
+        "DN绿"
+      ],
+      "pos": [
+        0.0,
+        0.92,
+        -1.05
+      ]
+    },
+    {
+      "id": "flt_recorder",
+      "name": "飞行记录器电门（护盖）",
+      "panel": "overhead",
+      "zone": "记录器",
+      "note": "护盖盖好；核实 OFF 指示灯亮（电源接通阶段典型状态）。FCOM NP.21.2",
+      "labels": [
+        "护盖"
+      ],
+      "pos": [
+        -0.48,
+        1.48,
+        0.14
+      ]
+    },
+    {
+      "id": "mach_warn_test",
+      "name": "马赫空速警告测试电门",
+      "panel": "main",
+      "zone": "警告测试",
+      "note": "按压，一次一个；核实咔嗒声响。FCOM NP.21.2–21.3",
+      "labels": [
+        "TEST1",
+        "TEST2"
+      ],
+      "pos": [
+        -0.35,
+        0.75,
+        -1.0
+      ]
+    },
+    {
+      "id": "stall_warn_test",
+      "name": "失速警告测试电门",
+      "panel": "main",
+      "zone": "警告测试",
+      "note": "按压并保持，一次一个；核实杆抖。需 AC 转换汇流条通电约4分钟。FCOM NP.21.3",
+      "labels": [
+        "TEST1",
+        "TEST2"
+      ],
+      "pos": [
+        -0.18,
+        0.75,
+        -1.0
+      ]
+    },
+    {
+      "id": "evac_switch",
+      "name": "紧急撤离起动电门（护盖）",
+      "panel": "overhead",
+      "zone": "撤离",
+      "note": "护盖盖好；核实 EVAC 灯灭。FCOM NP.21.3",
+      "labels": [
+        "护盖"
+      ],
+      "pos": [
+        0.55,
+        1.52,
+        -0.08
+      ]
+    },
+    {
+      "id": "yaw_damper",
+      "name": "偏航阻尼器电门",
+      "panel": "overhead",
+      "zone": "飞行操纵",
+      "note": "飞行前程序-副驾驶：YAW DAMPER ON，灯灭。FCOM NP.21.11",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.0,
+        1.58,
+        -0.05
+      ]
+    },
+    {
+      "id": "fuel_crossfeed",
+      "name": "交输供油选择器",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "飞行前：交输关闭，VALVE OPEN 灯灭。FCOM NP.21.12",
+      "labels": [
+        "关",
+        "开"
+      ],
+      "pos": [
+        0.0,
+        1.55,
+        0.05
+      ]
+    },
+    {
+      "id": "fuel_ctr_l",
+      "name": "左中央燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "起动前：中央油箱>453kg 时左右中央泵 ON。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.18,
+        1.52,
+        0.08
+      ]
+    },
+    {
+      "id": "fuel_ctr_r",
+      "name": "右中央燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "与左中央泵同条件开启。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.18,
+        1.52,
+        0.08
+      ]
+    },
+    {
+      "id": "fuel_fwd_1",
+      "name": "1发前燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "起动前：前、后燃油泵电门 ON，低压灯灭。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.42,
+        1.5,
+        0.12
+      ]
+    },
+    {
+      "id": "fuel_aft_1",
+      "name": "1发后燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "起动前主油箱泵 ON。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.28,
+        1.5,
+        0.12
+      ]
+    },
+    {
+      "id": "fuel_fwd_2",
+      "name": "2发前燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "起动前主油箱泵 ON。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.28,
+        1.5,
+        0.12
+      ]
+    },
+    {
+      "id": "fuel_aft_2",
+      "name": "2发后燃油泵",
+      "panel": "overhead",
+      "zone": "燃油",
+      "note": "起动前主油箱泵 ON。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.42,
+        1.5,
+        0.12
+      ]
+    },
+    {
+      "id": "batt",
+      "name": "电瓶电门（护盖）",
+      "panel": "overhead",
+      "zone": "电气",
+      "note": "飞行前：电瓶电门护盖盖好。FCOM NP.21.12",
+      "labels": [
+        "护盖"
+      ],
+      "pos": [
+        -0.55,
+        1.56,
+        0.0
+      ]
+    },
+    {
+      "id": "apu_sw",
+      "name": "APU 电门",
+      "panel": "overhead",
+      "zone": "APU",
+      "note": "飞行前按需 START；引气前需运转约2分钟。FCOM NP.21.14",
+      "labels": [
+        "OFF",
+        "ON",
+        "START"
+      ],
+      "pos": [
+        -0.05,
+        1.48,
+        0.18
+      ]
+    },
+    {
+      "id": "apu_gen",
+      "name": "APU 发电机汇流条电门",
+      "panel": "overhead",
+      "zone": "电气",
+      "note": "APU GEN OFF BUS 灯亮时置于 ON。FCOM NP.21.14",
+      "labels": [
+        "ON"
+      ],
+      "pos": [
+        0.12,
+        1.48,
+        0.18
+      ]
+    },
+    {
+      "id": "emer_exit_lt",
+      "name": "紧急出口灯电门（护盖）",
+      "panel": "overhead",
+      "zone": "灯光/应急",
+      "note": "护盖盖好；NOT ARMED 灯灭。FCOM NP.21.15",
+      "labels": [
+        "护盖"
+      ],
+      "pos": [
+        0.55,
+        1.58,
+        0.05
+      ]
+    },
+    {
+      "id": "window_heat",
+      "name": "窗加温电门",
+      "panel": "overhead",
+      "zone": "防冰/窗",
+      "note": "起飞前至少10分钟 ON。FCOM NP.21.15",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.48,
+        1.54,
+        -0.02
+      ]
+    },
+    {
+      "id": "wing_anti_ice",
+      "name": "机翼防冰电门",
+      "panel": "overhead",
+      "zone": "防冰",
+      "note": "飞行前 OFF；滑行前按需。FCOM NP.21.15 / NP.21.32",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.0,
+        1.46,
+        0.28
+      ]
+    },
+    {
+      "id": "eng_anti_ice_1",
+      "name": "1发防冰电门",
+      "panel": "overhead",
+      "zone": "防冰",
+      "note": "飞行前 OFF。FCOM NP.21.15",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.22,
+        1.46,
+        0.28
+      ]
+    },
+    {
+      "id": "eng_anti_ice_2",
+      "name": "2发防冰电门",
+      "panel": "overhead",
+      "zone": "防冰",
+      "note": "飞行前 OFF。FCOM NP.21.15",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.22,
+        1.46,
+        0.28
+      ]
+    },
+    {
+      "id": "hyd_eng_a",
+      "name": "A系统发动机液压泵",
+      "panel": "overhead",
+      "zone": "液压",
+      "note": "飞行前 ON（低压灯亮，因尚未增压）。FCOM NP.21.16",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.35,
+        1.42,
+        0.32
+      ]
+    },
+    {
+      "id": "hyd_eng_b",
+      "name": "B系统发动机液压泵",
+      "panel": "overhead",
+      "zone": "液压",
+      "note": "飞行前 ON。FCOM NP.21.16",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.35,
+        1.42,
+        0.32
+      ]
+    },
+    {
+      "id": "hyd_elec_a",
+      "name": "A系统电动液压泵",
+      "panel": "overhead",
+      "zone": "液压",
+      "note": "飞行前 OFF；起动前（无推出或旁通销已插）ON 增压。FCOM NP.21.16 / NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.18,
+        1.4,
+        0.35
+      ]
+    },
+    {
+      "id": "hyd_elec_b",
+      "name": "B系统电动液压泵",
+      "panel": "overhead",
+      "zone": "液压",
+      "note": "起动前增压关键电门之一。推出且无旁通销时仅开 B 电动泵。FCOM NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.18,
+        1.4,
+        0.35
+      ]
+    },
+    {
+      "id": "pack_l",
+      "name": "左空调组件电门",
+      "panel": "overhead",
+      "zone": "空调",
+      "note": "飞行前 AUTO/HIGH；发动机起动前 OFF。FCOM NP.21.16 / NP.21.31",
+      "labels": [
+        "OFF",
+        "AUTO",
+        "HIGH"
+      ],
+      "pos": [
+        -0.32,
+        1.36,
+        0.38
+      ]
+    },
+    {
+      "id": "pack_r",
+      "name": "右空调组件电门",
+      "panel": "overhead",
+      "zone": "空调",
+      "note": "与左组件同程序。FCOM NP.21.16 / NP.21.31",
+      "labels": [
+        "OFF",
+        "AUTO",
+        "HIGH"
+      ],
+      "pos": [
+        0.32,
+        1.36,
+        0.38
+      ]
+    },
+    {
+      "id": "isol_valve",
+      "name": "隔离活门",
+      "panel": "overhead",
+      "zone": "空调/引气",
+      "note": "飞行前 OPEN；滑行前 AUTO。FCOM NP.21.16 / NP.21.32",
+      "labels": [
+        "CLOSE",
+        "AUTO",
+        "OPEN"
+      ],
+      "pos": [
+        0.0,
+        1.34,
+        0.4
+      ]
+    },
+    {
+      "id": "bleed_1",
+      "name": "1发引气电门",
+      "panel": "overhead",
+      "zone": "引气",
+      "note": "飞行前 ON。FCOM NP.21.16",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.38,
+        1.32,
+        0.42
+      ]
+    },
+    {
+      "id": "bleed_apu",
+      "name": "APU 引气电门",
+      "panel": "overhead",
+      "zone": "引气",
+      "note": "飞行前 ON（双引气灯可能亮）；滑行前 OFF。FCOM NP.21.16 / NP.21.32",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.0,
+        1.3,
+        0.44
+      ]
+    },
+    {
+      "id": "bleed_2",
+      "name": "2发引气电门",
+      "panel": "overhead",
+      "zone": "引气",
+      "note": "飞行前 ON。FCOM NP.21.16",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.38,
+        1.32,
+        0.42
+      ]
+    },
+    {
+      "id": "press_mode",
+      "name": "增压方式选择器",
+      "panel": "overhead",
+      "zone": "座舱增压",
+      "note": "飞行前 AUTO。FCOM NP.21.17",
+      "labels": [
+        "AUTO",
+        "ALTN",
+        "MAN"
+      ],
+      "pos": [
+        0.0,
+        1.28,
+        0.46
+      ]
+    },
+    {
+      "id": "ignition",
+      "name": "点火选择电门",
+      "panel": "overhead",
+      "zone": "发动机起动",
+      "note": "IGN L 或 R；下次起动更换。FCOM NP.21.17",
+      "labels": [
+        "IGN L",
+        "BOTH",
+        "IGN R"
+      ],
+      "pos": [
+        0.0,
+        1.38,
+        0.25
+      ]
+    },
+    {
+      "id": "eng_start_1",
+      "name": "1发起动电门",
+      "panel": "overhead",
+      "zone": "发动机起动",
+      "note": "飞行前 OFF；起动放 GRD；约56%N2 回 OFF；滑行前可 CONT。FCOM NP.21.17 / NP.21.31–32",
+      "labels": [
+        "GRD",
+        "OFF",
+        "CONT",
+        "FLT"
+      ],
+      "pos": [
+        -0.22,
+        1.38,
+        0.25
+      ]
+    },
+    {
+      "id": "eng_start_2",
+      "name": "2发起动电门",
+      "panel": "overhead",
+      "zone": "发动机起动",
+      "note": "与1发相同逻辑。FCOM NP.21.31",
+      "labels": [
+        "GRD",
+        "OFF",
+        "CONT",
+        "FLT"
+      ],
+      "pos": [
+        0.22,
+        1.38,
+        0.25
+      ]
+    },
+    {
+      "id": "anti_coll",
+      "name": "防撞灯电门",
+      "panel": "overhead",
+      "zone": "外部灯光",
+      "note": "飞行前 OFF；起动前 ON。FCOM NP.21.17 / NP.21.28",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.55,
+        1.48,
+        0.15
+      ]
+    },
+    {
+      "id": "landing_lt",
+      "name": "着陆灯电门",
+      "panel": "overhead",
+      "zone": "外部灯光",
+      "note": "飞行前 OFF/收上。FCOM NP.21.17",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.48,
+        1.45,
+        0.2
+      ]
+    },
+    {
+      "id": "taxi_lt",
+      "name": "滑行灯电门",
+      "panel": "overhead",
+      "zone": "外部灯光",
+      "note": "飞行前 OFF。FCOM NP.21.17",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.4,
+        1.45,
+        0.24
+      ]
+    },
+    {
+      "id": "mcp_at",
+      "name": "自动油门预位电门",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起动前：AUTOTHROTTLE ARM。FCOM NP.21.27",
+      "labels": [
+        "ARM",
+        "OFF"
+      ],
+      "pos": [
+        -0.22,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_spd",
+      "name": "空速/马赫选择器（MCP）",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起动前设为 V2。FCOM NP.21.27",
+      "labels": [
+        "IAS"
+      ],
+      "pos": [
+        -0.08,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_lnav",
+      "name": "LNAV 电门",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起动前按需预位 LNAV。FCOM NP.21.27",
+      "labels": [
+        "LNAV"
+      ],
+      "pos": [
+        0.05,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_vnav",
+      "name": "VNAV 电门",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起动前预位 VNAV。FCOM NP.21.27",
+      "labels": [
+        "VNAV"
+      ],
+      "pos": [
+        0.18,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_hdg",
+      "name": "航向选择器（MCP）",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起始航向调定。FCOM NP.21.27",
+      "labels": [
+        "HDG"
+      ],
+      "pos": [
+        0.32,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_alt",
+      "name": "高度选择器（MCP）",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "起始高度调定。FCOM NP.21.27",
+      "labels": [
+        "ALT"
+      ],
+      "pos": [
+        0.48,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_fd_l",
+      "name": "左飞行指引仪电门",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "飞行前程序-机长：FD ON（先 PF 一侧）。FCOM NP.21.22",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        -0.38,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_fd_r",
+      "name": "右飞行指引仪电门",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "两侧 FD 按需。FCOM NP.21.22",
+      "labels": [
+        "ON",
+        "OFF"
+      ],
+      "pos": [
+        0.62,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "mcp_course_l",
+      "name": "左航道窗",
+      "panel": "glareshield",
+      "zone": "MCP",
+      "note": "航道设定。FCOM NP.21.22",
+      "labels": [
+        "CRS"
+      ],
+      "pos": [
+        -0.55,
+        1.08,
+        -0.88
+      ]
+    },
+    {
+      "id": "gear_lever",
+      "name": "起落架手柄",
+      "panel": "main",
+      "zone": "起落架",
+      "note": "飞行前 DN；核实绿灯亮、红灯灭。FCOM NP.21.20",
+      "labels": [
+        "UP",
+        "OFF",
+        "DN"
+      ],
+      "pos": [
+        0.12,
+        0.78,
+        -1.0
+      ]
+    },
+    {
+      "id": "autobrake",
+      "name": "自动刹车选择电门",
+      "panel": "main",
+      "zone": "刹车",
+      "note": "飞行前 RTO。FCOM NP.21.20",
+      "labels": [
+        "RTO",
+        "OFF",
+        "1",
+        "2",
+        "3",
+        "MAX"
+      ],
+      "pos": [
+        0.28,
+        0.82,
+        -1.02
+      ]
+    },
+    {
+      "id": "flap_lever",
+      "name": "襟翼手柄",
+      "panel": "pedestal",
+      "zone": "襟翼",
+      "note": "构形按起飞简令；本练习仅识别位置。参考 NP 构形检查原理 NP.11.1",
+      "labels": [
+        "UP",
+        "1",
+        "5",
+        "15",
+        "30",
+        "40"
+      ],
+      "pos": [
+        0.22,
+        0.58,
+        0.05
+      ]
+    },
+    {
+      "id": "speedbrake",
+      "name": "扰流板手柄",
+      "panel": "pedestal",
+      "zone": "扰流板",
+      "note": "地面收进位；详细以检查单为准。",
+      "labels": [
+        "DOWN",
+        "ARMED",
+        "FLIGHT",
+        "UP"
+      ],
+      "pos": [
+        -0.22,
+        0.62,
+        -0.15
+      ]
+    },
+    {
+      "id": "park_brake",
+      "name": "停留刹车",
+      "panel": "pedestal",
+      "zone": "刹车",
+      "note": "飞行前按需；机长程序中设置并核实警告灯。FCOM NP.21.3 / NP.21.26",
+      "labels": [
+        "SET",
+        "OFF"
+      ],
+      "pos": [
+        0.0,
+        0.52,
+        0.22
+      ]
+    },
+    {
+      "id": "fuel_lever_1",
+      "name": "1发燃油控制手柄",
+      "panel": "pedestal",
+      "zone": "油门台",
+      "note": "起动：N1转动且N2≥25%（或最大冷转且N2≥20%）移至 IDLE；监控至慢车稳定。FCOM NP.21.30–31",
+      "labels": [
+        "CUTOFF",
+        "IDLE"
+      ],
+      "pos": [
+        -0.08,
+        0.55,
+        0.08
+      ]
+    },
+    {
+      "id": "fuel_lever_2",
+      "name": "2发燃油控制手柄",
+      "panel": "pedestal",
+      "zone": "油门台",
+      "note": "与1发相同起动逻辑。FCOM NP.21.31",
+      "labels": [
+        "CUTOFF",
+        "IDLE"
+      ],
+      "pos": [
+        0.08,
+        0.55,
+        0.08
+      ]
+    },
+    {
+      "id": "throttle_1",
+      "name": "1发油门杆",
+      "panel": "pedestal",
+      "zone": "油门台",
+      "note": "起动过程保持慢车区监控；非本练习强制操作项。",
+      "labels": [
+        "THR"
+      ],
+      "pos": [
+        -0.08,
+        0.68,
+        -0.05
+      ]
+    },
+    {
+      "id": "throttle_2",
+      "name": "2发油门杆",
+      "panel": "pedestal",
+      "zone": "油门台",
+      "note": "与1发相同。",
+      "labels": [
+        "THR"
+      ],
+      "pos": [
+        0.08,
+        0.68,
+        -0.05
+      ]
+    },
+    {
+      "id": "stab_trim",
+      "name": "安定面配平轮",
+      "panel": "pedestal",
+      "zone": "配平",
+      "note": "起动前设定起飞配平并核实绿区。FCOM NP.21.28",
+      "labels": [
+        "TRIM"
+      ],
+      "pos": [
+        -0.35,
+        0.55,
+        0.0
+      ]
+    },
+    {
+      "id": "transponder",
+      "name": "应答机面板",
+      "panel": "pedestal",
+      "zone": "通讯/监视",
+      "note": "飞行前设置；推出时按需。FCOM NP.21.21 / NP.21.29",
+      "labels": [
+        "STBY",
+        "XPNDR"
+      ],
+      "pos": [
+        0.0,
+        0.48,
+        0.38
+      ]
+    },
+    {
+      "id": "fire_test",
+      "name": "过热/火警测试电门",
+      "panel": "overhead",
+      "zone": "防火",
+      "note": "飞行前每日检查：FAULT/INOP 与 OVHT/FIRE 位测试。FCOM NP.21.13",
+      "labels": [
+        "TEST"
+      ],
+      "pos": [
+        0.0,
+        1.44,
+        0.22
+      ]
+    },
+    {
+      "id": "master_caution",
+      "name": "主警戒灯/复位",
+      "panel": "glareshield",
+      "zone": "警告",
+      "note": "系统灯光用于起动前核实构形。FCOM NP.11.1",
+      "labels": [
+        "MC"
+      ],
+      "pos": [
+        -0.42,
+        1.12,
+        -0.95
+      ]
+    },
+    {
+      "id": "fire_warn",
+      "name": "主火警灯",
+      "panel": "glareshield",
+      "zone": "警告",
+      "note": "火警测试时按压可消音熄灯。FCOM NP.21.13",
+      "labels": [
+        "FIRE"
+      ],
+      "pos": [
+        -0.55,
+        1.12,
+        -0.95
+      ]
+    }
   ],
   "scenarios": [
     {
@@ -93,7 +1087,9 @@
           "explain": "飞行前初始准备：IRS 方式选择器 OFF 然后 NAV；核实 ON DC 亮后灭、ALIGN 亮。建议每次飞行完全校准。",
           "ref": "NP.21.1",
           "panel": "overhead",
-          "setState": {"irs_l": "NAV"}
+          "setState": {
+            "irs_l": "NAV"
+          }
         },
         {
           "id": "p2",
@@ -102,7 +1098,9 @@
           "explain": "两侧 IRS 均需进入校准/导航流程。",
           "ref": "NP.21.1",
           "panel": "overhead",
-          "setState": {"irs_r": "NAV"}
+          "setState": {
+            "irs_r": "NAV"
+          }
         },
         {
           "id": "p3",
@@ -111,7 +1109,9 @@
           "explain": "发动机面板设置：核实反推灯、发动机控制灯熄灭后，EEC 电门 ON。",
           "ref": "NP.21.2",
           "panel": "overhead",
-          "setState": {"eec_1": "ON"}
+          "setState": {
+            "eec_1": "ON"
+          }
         },
         {
           "id": "p4",
@@ -120,7 +1120,9 @@
           "explain": "两侧 EEC 均 ON。",
           "ref": "NP.21.2",
           "panel": "overhead",
-          "setState": {"eec_2": "ON"}
+          "setState": {
+            "eec_2": "ON"
+          }
         },
         {
           "id": "p5",
@@ -129,7 +1131,9 @@
           "explain": "注意：启用旅客氧气会使面罩放出。核实 PASS OXY ON 灯熄灭。",
           "ref": "NP.21.2",
           "panel": "overhead",
-          "setState": {"pass_oxy": "GUARDED"}
+          "setState": {
+            "pass_oxy": "GUARDED"
+          }
         },
         {
           "id": "p6",
@@ -138,7 +1142,9 @@
           "explain": "起落架指示器灯 —— 核实亮。",
           "ref": "NP.21.2",
           "panel": "main",
-          "setState": {"gear_lights": "ON"}
+          "setState": {
+            "gear_lights": "ON"
+          }
         },
         {
           "id": "p7",
@@ -147,7 +1153,9 @@
           "explain": "护盖盖好；核实 OFF 指示灯亮。",
           "ref": "NP.21.2",
           "panel": "overhead",
-          "setState": {"flt_recorder": "GUARDED"}
+          "setState": {
+            "flt_recorder": "GUARDED"
+          }
         },
         {
           "id": "p8",
@@ -156,7 +1164,9 @@
           "explain": "按压测试电门，一次一个；核实咔嗒声响。本界面用点选代表测试动作。",
           "ref": "NP.21.2–21.3",
           "panel": "main",
-          "setState": {"mach_warn_test": "TESTED"}
+          "setState": {
+            "mach_warn_test": "TESTED"
+          }
         },
         {
           "id": "p9",
@@ -165,7 +1175,9 @@
           "explain": "一次一个按压并保持，核实杆抖。注：需 AC 转换汇流条通电约4分钟；液压关断时前缘可能影响测试。",
           "ref": "NP.21.3",
           "panel": "main",
-          "setState": {"stall_warn_test": "TESTED"}
+          "setState": {
+            "stall_warn_test": "TESTED"
+          }
         },
         {
           "id": "p10",
@@ -174,7 +1186,9 @@
           "explain": "护盖盖好；核实 EVAC 灯熄灭。",
           "ref": "NP.21.3",
           "panel": "overhead",
-          "setState": {"evac_switch": "GUARDED"}
+          "setState": {
+            "evac_switch": "GUARDED"
+          }
         }
       ]
     },
@@ -200,7 +1214,9 @@
           "explain": "起动前 MCP 设置：AUTOTHROTTLE ARM。",
           "ref": "NP.21.27",
           "panel": "glareshield",
-          "setState": {"mcp_at": "ARM"}
+          "setState": {
+            "mcp_at": "ARM"
+          }
         },
         {
           "id": "b2",
@@ -209,7 +1225,9 @@
           "explain": "IAS/MACH 选择器设为 V2。",
           "ref": "NP.21.27",
           "panel": "glareshield",
-          "setState": {"mcp_spd": "V2"}
+          "setState": {
+            "mcp_spd": "V2"
+          }
         },
         {
           "id": "b3",
@@ -218,7 +1236,9 @@
           "explain": "起动前预位 VNAV；LNAV 按需。",
           "ref": "NP.21.27",
           "panel": "glareshield",
-          "setState": {"mcp_vnav": "ARMED"}
+          "setState": {
+            "mcp_vnav": "ARMED"
+          }
         },
         {
           "id": "b4",
@@ -227,7 +1247,9 @@
           "explain": "起始航向调定。",
           "ref": "NP.21.27",
           "panel": "glareshield",
-          "setState": {"mcp_hdg": "SET"}
+          "setState": {
+            "mcp_hdg": "SET"
+          }
         },
         {
           "id": "b5",
@@ -236,7 +1258,9 @@
           "explain": "起始高度调定。",
           "ref": "NP.21.27",
           "panel": "glareshield",
-          "setState": {"mcp_alt": "SET"}
+          "setState": {
+            "mcp_alt": "SET"
+          }
         },
         {
           "id": "b6",
@@ -245,7 +1269,9 @@
           "explain": "燃油面板：前、后燃油泵电门 ON；核实低压灯灭。中央泵仅当油量>453kg。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"fuel_fwd_1": "ON"}
+          "setState": {
+            "fuel_fwd_1": "ON"
+          }
         },
         {
           "id": "b7",
@@ -254,7 +1280,9 @@
           "explain": "主油箱后泵 ON。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"fuel_aft_1": "ON"}
+          "setState": {
+            "fuel_aft_1": "ON"
+          }
         },
         {
           "id": "b8",
@@ -263,7 +1291,9 @@
           "explain": "右侧主油箱前泵 ON。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"fuel_fwd_2": "ON"}
+          "setState": {
+            "fuel_fwd_2": "ON"
+          }
         },
         {
           "id": "b9",
@@ -272,7 +1302,9 @@
           "explain": "右侧主油箱后泵 ON；核实低压灯熄灭。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"fuel_aft_2": "ON"}
+          "setState": {
+            "fuel_aft_2": "ON"
+          }
         },
         {
           "id": "b10",
@@ -281,7 +1313,9 @@
           "explain": "无推出或旁通销已插：电动液压泵 ON，核实低压灯灭、刹车与系统压力≥2800psi。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"hyd_elec_a": "ON"}
+          "setState": {
+            "hyd_elec_a": "ON"
+          }
         },
         {
           "id": "b11",
@@ -290,7 +1324,9 @@
           "explain": "两侧电动泵增压。若推出且无旁通销：禁止增压 A 系统，仅开 B 电动泵。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"hyd_elec_b": "ON"}
+          "setState": {
+            "hyd_elec_b": "ON"
+          }
         },
         {
           "id": "b12",
@@ -299,7 +1335,9 @@
           "explain": "防撞灯电门 ON。随后机长指令并执行「起动前检查单」（本练习用面板步骤代替检查单朗读）。",
           "ref": "NP.21.28",
           "panel": "overhead",
-          "setState": {"anti_coll": "ON"}
+          "setState": {
+            "anti_coll": "ON"
+          }
         }
       ]
     },
@@ -324,7 +1362,9 @@
           "explain": "起动：空调组件电门 OFF（减小引气负荷）。",
           "ref": "NP.21.31",
           "panel": "overhead",
-          "setState": {"pack_l": "OFF"}
+          "setState": {
+            "pack_l": "OFF"
+          }
         },
         {
           "id": "e2",
@@ -333,7 +1373,9 @@
           "explain": "两侧组件 OFF。",
           "ref": "NP.21.31",
           "panel": "overhead",
-          "setState": {"pack_r": "OFF"}
+          "setState": {
+            "pack_r": "OFF"
+          }
         },
         {
           "id": "e3",
@@ -342,7 +1384,9 @@
           "explain": "机长宣布起动顺序并指令后：ENGINE START 电门 GRD。核实 N2 增加。起动电门在起动机脱开前须保持 GRD。",
           "ref": "NP.21.31",
           "panel": "overhead",
-          "setState": {"eng_start_1": "GRD"}
+          "setState": {
+            "eng_start_1": "GRD"
+          }
         },
         {
           "id": "e4",
@@ -351,7 +1395,9 @@
           "explain": "当看到 N1 转动且 N2 达 25%，或最大冷转且 N2≥20%：手柄至 IDLE 卡位。移动时不得施加旋转力。监控燃油流量与 EGT。",
           "ref": "NP.21.30–21.31",
           "panel": "pedestal",
-          "setState": {"fuel_lever_1": "IDLE"}
+          "setState": {
+            "fuel_lever_1": "IDLE"
+          }
         },
         {
           "id": "e5",
@@ -360,7 +1406,9 @@
           "explain": "56% N2 时核实起动电门移到 OFF；若未自动脱开则手动 OFF。核实 START VALVE OPEN 灯灭，报告「起动机脱开」。继续监控至慢车稳定。",
           "ref": "NP.21.31",
           "panel": "overhead",
-          "setState": {"eng_start_1": "OFF"}
+          "setState": {
+            "eng_start_1": "OFF"
+          }
         },
         {
           "id": "e6",
@@ -369,7 +1417,9 @@
           "explain": "发动机稳定在慢车之后起动另一台。重复相同程序。",
           "ref": "NP.21.31",
           "panel": "overhead",
-          "setState": {"eng_start_2": "GRD"}
+          "setState": {
+            "eng_start_2": "GRD"
+          }
         },
         {
           "id": "e7",
@@ -378,7 +1428,9 @@
           "explain": "同样在 N2 条件满足后至 IDLE，监控至慢车。EGT 起动限制红线不再显示时视为稳定慢车。",
           "ref": "NP.21.31",
           "panel": "pedestal",
-          "setState": {"fuel_lever_2": "IDLE"}
+          "setState": {
+            "fuel_lever_2": "IDLE"
+          }
         },
         {
           "id": "e8",
@@ -387,9 +1439,18 @@
           "explain": "脱开起动机并监控稳定。随后进入滑行前程序（发电机、探头加温、组件 AUTO 等——本场景结束）。",
           "ref": "NP.21.31–21.32",
           "panel": "overhead",
-          "setState": {"eng_start_2": "OFF"}
+          "setState": {
+            "eng_start_2": "OFF"
+          }
         }
       ]
     }
-  ]
+  ],
+  "immersive": {
+    "note": "pos = [x,y,z] meters relative cockpit origin; CAPT eye ≈ (-0.42,1.18,0.42), forward -Z",
+    "credits": [
+      "Nick Bartolotta / CC BY-SA 3.0 — https://commons.wikimedia.org/wiki/File:Cockpit_of_Boeing_737-800,_ATA_Airlines_1.jpg",
+      "Milkmandan / CC BY-SA 3.0 — https://commons.wikimedia.org/wiki/File:Boeing_737_cockpit.jpg"
+    ]
+  }
 }
