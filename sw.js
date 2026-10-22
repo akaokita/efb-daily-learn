@@ -1,4 +1,4 @@
-const CACHE = "efb-learn-v3";
+const CACHE = "efb-learn-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,12 +7,23 @@ const ASSETS = [
   "./data/lessons.json",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  "./icons/apple-touch-icon.png"
 ];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(async (c) => {
+      for (const url of ASSETS) {
+        try {
+          await c.add(url);
+        } catch (err) {
+          // skip missing optional assets so SW can still activate
+          console.warn("SW cache skip", url, err);
+        }
+      }
+      await self.skipWaiting();
+    })
   );
 });
 

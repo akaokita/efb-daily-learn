@@ -520,7 +520,7 @@
   async function init() {
     const boot = $("#boot-status");
     if (boot) boot.textContent = "正在加载课程数据…";
-    const res = await fetch("./data/lessons.json?v=3", { cache: "no-cache" });
+    const res = await fetch("./data/lessons.json?v=4", { cache: "no-cache" });
     if (!res.ok) throw new Error("课程数据 HTTP " + res.status);
     state.data = await res.json();
     if (!state.data || !Array.isArray(state.data.lessons) || !state.data.lessons.length) {
@@ -537,7 +537,7 @@
     setView("today");
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js?v=3").then((reg) => {
+      navigator.serviceWorker.register("./sw.js?v=4").then((reg) => {
         reg.update().catch(() => {});
       }).catch(() => {});
     }
