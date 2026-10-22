@@ -86,8 +86,6 @@
       if (!inTable) return;
       let body = "";
       tableRows.forEach((row, idx) => {
-        const cells = row.split("|").map((c) => c.trim()).filter((_, j, a) => !(j === 0 && c === "") && !(j === a.length - 1 && c === ""));
-        // fix split
         const parts = row.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
         if (idx === 1 && parts.every((p) => /^:?-+:?$/.test(p))) return; // separator
         const tag = idx === 0 ? "th" : "td";
