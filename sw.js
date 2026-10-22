@@ -1,10 +1,14 @@
-const CACHE = "efb-learn-v4";
+const CACHE = "efb-learn-v5";
 const ASSETS = [
   "./",
   "./index.html",
+  "./cockpit.html",
   "./css/app.css",
+  "./css/cockpit.css",
   "./js/app.js",
+  "./js/cockpit.js",
   "./data/lessons.json",
+  "./data/cockpit-scenarios.json",
   "./manifest.webmanifest",
   "./icons/icon.svg"
 ];
