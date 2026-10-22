@@ -15,7 +15,15 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return defaultProgress();
-      return Object.assign(defaultProgress(), JSON.parse(raw));
+      const parsed = JSON.parse(raw);
+      const base = defaultProgress();
+      const merged = Object.assign(base, parsed && typeof parsed === "object" ? parsed : {});
+      if (!merged.completed || typeof merged.completed !== "object" || Array.isArray(merged.completed)) {
+        merged.completed = {};
+      }
+      if (!Array.isArray(merged.wrong)) merged.wrong = [];
+      if (!merged.studyDates || typeof merged.studyDates !== "object") merged.studyDates = {};
+      return merged;
     } catch {
       return defaultProgress();
     }
@@ -161,10 +169,18 @@
     state.view = name;
     $all(".view").forEach((v) => v.classList.toggle("active", v.dataset.view === name));
     $all(".bottom-nav button").forEach((b) => b.classList.toggle("active", b.dataset.nav === name));
-    if (name === "today") renderToday();
-    if (name === "courses") renderCourses();
-    if (name === "review") renderReview();
-    if (name === "me") renderMe();
+    try {
+      if (name === "today") renderToday();
+      if (name === "courses") renderCourses();
+      if (name === "review") renderReview();
+      if (name === "me") renderMe();
+    } catch (err) {
+      const el = document.querySelector(`.view[data-view="${name}"]`) || $("#view-today");
+      if (el) {
+        el.innerHTML = `<div class="card" style="color:#fca5a5">页面渲染失败：${escapeHtml(err && err.message || String(err))}。请无痕窗口打开或清除本站数据后重试。</div>`;
+      }
+      console.error(err);
+    }
     window.scrollTo(0, 0);
   }
 
@@ -174,7 +190,17 @@
     state.quizIndex = 0;
     state.answers = [];
     setView("lesson");
-    renderLesson();
+    try {
+      renderLesson();
+    } catch (err) {
+      const el = $("#view-lesson");
+      if (el) {
+        el.innerHTML = `<div class="card" style="color:#fca5a5">课程渲染失败：${escapeHtml(err && err.message || String(err))}<div class="btn-row" style="margin-top:12px"><button class="btn" id="btn-back-err">返回今日</button></div></div>`;
+        const b = $("#btn-back-err");
+        if (b) b.onclick = () => setView("today");
+      }
+      console.error(err);
+    }
   }
 
   function renderToday() {
@@ -492,8 +518,14 @@
   }
 
   async function init() {
-    const res = await fetch("./data/lessons.json");
+    const boot = $("#boot-status");
+    if (boot) boot.textContent = "正在加载课程数据…";
+    const res = await fetch("./data/lessons.json?v=3", { cache: "no-cache" });
+    if (!res.ok) throw new Error("课程数据 HTTP " + res.status);
     state.data = await res.json();
+    if (!state.data || !Array.isArray(state.data.lessons) || !state.data.lessons.length) {
+      throw new Error("课程数据为空或格式不对");
+    }
     document.title = state.data.title;
     $("#app-title").textContent = state.data.title;
 
@@ -505,7 +537,9 @@
     setView("today");
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=3").then((reg) => {
+        reg.update().catch(() => {});
+      }).catch(() => {});
     }
   }
 

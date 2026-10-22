@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="B737 EFB 入职每日微课学习辅助。飞行运行以公司现行有效版手册为准。" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="./icons/icon.svg" />
-  <link rel="icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./css/app.css" />
+  <link rel="manifest" href="./manifest.webmanifest?v=3" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./css/app.css?v=3" />
   <title>B737 EFB 每日微课</title>
 </head>
 <body>
@@ -20,7 +20,9 @@
   </header>
 
   <main>
-    <section class="view active" data-view="today" id="view-today"></section>
+    <section class="view active" data-view="today" id="view-today">
+      <div class="card" id="boot-status">正在加载课程数据…</div>
+    </section>
     <section class="view" data-view="courses" id="view-courses"></section>
     <section class="view" data-view="review" id="view-review"></section>
     <section class="view" data-view="me" id="view-me"></section>
@@ -34,6 +36,25 @@
     <button type="button" data-nav="me"><span class="ico">👤</span>我的</button>
   </nav>
 
-  <script src="./js/app.js"></script>
+  <script>
+    // Drop stale service-worker caches that can freeze a blank shell after deploys
+    (function () {
+      var EXPECT = "efb-learn-v3";
+      try {
+        if (!("serviceWorker" in navigator)) return;
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { /* keep; app.js will register v3 */ });
+        });
+        if (window.caches && caches.keys) {
+          caches.keys().then(function (keys) {
+            keys.forEach(function (k) {
+              if (k !== EXPECT) caches.delete(k);
+            });
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script src="./js/app.js?v=3"></script>
 </body>
 </html>
