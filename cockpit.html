@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b12" />
+  <meta name="description" content="B737NG 驾驶舱程序互动练习。个人学习辅助，运行以公司现行 FCOM/EFB 为准。" />
+  <link rel="icon" href="./icons/icon.svg" />
+  <link rel="stylesheet" href="./css/cockpit.css?v=5" />
+  <title>驾驶舱练习 · B737NG</title>
+</head>
+<body>
+  <header class="ck-header">
+    <a class="back" href="./index.html" title="返回微课">←</a>
+    <h1 id="hdr-title">驾驶舱练习</h1>
+    <div class="mode-tabs" id="mode-tabs" role="tablist">
+      <button type="button" data-mode="home" class="active">场景</button>
+      <button type="button" data-mode="guide">引导练习</button>
+      <button type="button" data-mode="explore">自由探索</button>
+    </div>
+    <p class="sub">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
+  </header>
+
+  <div class="ck-body">
+    <section id="view-home" class="home-screen">
+      <div class="card">
+        <h3>B737NG 驾驶舱程序练习</h3>
+        <p class="meta">示意面板 + 引导点击。步骤摘自 FCOM 正常程序（NP），非飞行模拟器，不能替代本场训练与现行手册。</p>
+      </div>
+      <div id="scenario-list"></div>
+      <div class="card">
+        <h3>自由探索</h3>
+        <p class="meta">点任意电门查看名称与手册提示，不按顺序。</p>
+        <div class="btn-row">
+          <button type="button" class="btn secondary" id="btn-explore">进入自由探索</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-sim" class="hidden" style="display:flex;flex-direction:column;min-height:0;flex:1">
+      <div class="panel-tabs" id="panel-tabs" style="padding:6px 8px;flex:0 0 auto">
+        <button type="button" data-panel="overhead" class="active">顶板</button>
+        <button type="button" data-panel="glareshield">遮光罩/MCP</button>
+        <button type="button" data-panel="main">主仪表</button>
+        <button type="button" data-panel="pedestal">中央操纵台</button>
+      </div>
+      <div class="ck-stage" id="ck-stage">
+        <!-- Overhead -->
+        <div class="panel-view active" data-panel-view="overhead">
+          <div class="panel-frame">
+            <div class="panel-title">Overhead · 顶板示意</div>
+            <div class="zone">
+              <div class="zone-label">导航 / IRS</div>
+              <div class="row">
+                <button type="button" class="hot" data-id="irs_l"><span class="lbl">L IRS</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="irs_r"><span class="lbl">R IRS</span><span class="val" data-val>OFF</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">飞行操纵</div>
+              <div class="row">
+                <button type="button" class="hot" data-id="yaw_damper"><span class="lbl">YAW DAMPER</span><span class="val" data-val>OFF</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">燃油 FUEL</div>
+              <div class="sw-bank">
+                <button type="button" class="hot" data-id="fuel_ctr_l"><span class="lbl">CTR L</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="fuel_ctr_r"><span class="lbl">CTR R</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="fuel_crossfeed"><span class="lbl">CROSSFEED</span><span class="val" data-val>关</span></button>
+                <button type="button" class="hot" data-id="fuel_fwd_1"><span class="lbl">1 FWD</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="fuel_aft_1"><span class="lbl">1 AFT</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="fuel_fwd_2"><span class="lbl">2 FWD</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="fuel_aft_2"><span class="lbl">2 AFT</span><span class="val" data-val>OFF</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">电气 / APU / 防火</div>
+              <div class="sw-bank">
+                <button type="button" class="hot guarded" data-id="batt"><span class="lbl">BATTERY</span><span class="val" data-val>护盖</span></button>
+                <button type="button" class="hot" data-id="apu_sw"><span class="lbl">APU</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="apu_gen"><span class="lbl">APU GEN</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot" data-id="fire_test"><span class="lbl">OVHT/FIRE TEST</span><span class="val" data-val>TEST</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">防冰 / 窗 / 应急灯</div>
+              <div class="sw-bank">
+                <button type="button" class="hot" data-id="window_heat"><span class="lbl">WINDOW HEAT</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="wing_anti_ice"><span class="lbl">WING A/I</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="eng_anti_ice_1"><span class="lbl">ENG 1 A/I</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="eng_anti_ice_2"><span class="lbl">ENG 2 A/I</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot guarded" data-id="emer_exit_lt"><span class="lbl">EMER EXIT LT</span><span class="val" data-val>护盖</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">液压 HYDRAULICS</div>
+              <div class="sw-bank">
+                <button type="button" class="hot" data-id="hyd_eng_a"><span class="lbl">A ENG</span><span class="val" data-val>ON</span></button>
+                <button type="button" class="hot" data-id="hyd_eng_b"><span class="lbl">B ENG</span><span class="val" data-val>ON</span></button>
+                <button type="button" class="hot" data-id="hyd_elec_a"><span class="lbl">A ELEC</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="hyd_elec_b"><span class="lbl">B ELEC</span><span class="val" data-val>OFF</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">空调 / 引气 / 增压</div>
+              <div class="sw-bank">
+                <button type="button" class="hot" data-id="pack_l"><span class="lbl">L PACK</span><span class="val" data-val>AUTO</span></button>
+                <button type="button" class="hot" data-id="pack_r"><span class="lbl">R PACK</span><span class="val" data-val>AUTO</span></button>
+                <button type="button" class="hot" data-id="isol_valve"><span class="lbl">ISOL VALVE</span><span class="val" data-val>OPEN</span></button>
+                <button type="button" class="hot" data-id="bleed_1"><span class="lbl">ENG 1 BLEED</span><span class="val" data-val>ON</span></button>
+                <button type="button" class="hot" data-id="bleed_apu"><span class="lbl">APU BLEED</span><span class="val" data-val>ON</span></button>
+                <button type="button" class="hot" data-id="bleed_2"><span class="lbl">ENG 2 BLEED</span><span class="val" data-val>ON</span></button>
+                <button type="button" class="hot" data-id="press_mode"><span class="lbl">PRESS MODE</span><span class="val" data-val>AUTO</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">发动机面板 / 起动 / 灯光 / 氧气 / 记录器</div>
+              <div class="sw-bank">
+                <button type="button" class="hot" data-id="eec_1"><span class="lbl">EEC 1</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="eec_2"><span class="lbl">EEC 2</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="ignition"><span class="lbl">IGNITION</span><span class="val" data-val>IGN L</span></button>
+                <button type="button" class="hot" data-id="eng_start_1"><span class="lbl">START 1</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="eng_start_2"><span class="lbl">START 2</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="anti_coll"><span class="lbl">ANTI COLL</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="landing_lt"><span class="lbl">LANDING LT</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot" data-id="taxi_lt"><span class="lbl">TAXI LT</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot guarded" data-id="pass_oxy"><span class="lbl">PASS OXY</span><span class="val" data-val>护盖</span></button>
+                <button type="button" class="hot guarded" data-id="flt_recorder"><span class="lbl">FLT REC</span><span class="val" data-val>护盖</span></button>
+                <button type="button" class="hot guarded" data-id="evac_switch"><span class="lbl">EVAC</span><span class="val" data-val>护盖</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glareshield / MCP -->
+        <div class="panel-view" data-panel-view="glareshield">
+          <div class="panel-frame">
+            <div class="panel-title">Glareshield · MCP 示意</div>
+            <div class="zone">
+              <div class="zone-label">警告灯</div>
+              <div class="row">
+                <button type="button" class="hot" data-id="fire_warn"><span class="lbl">FIRE WARN</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot" data-id="master_caution"><span class="lbl">MASTER CAUTION</span><span class="val" data-val>—</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">Mode Control Panel</div>
+              <div class="mcp-board">
+                <button type="button" class="hot mcp-win" data-id="mcp_course_l"><span class="lbl">CRS</span><span class="val" data-val>000</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_fd_l"><span class="lbl">FD L</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_at"><span class="lbl">A/T</span><span class="val" data-val>OFF</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_spd"><span class="lbl">IAS/MACH</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_lnav"><span class="lbl">LNAV</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_vnav"><span class="lbl">VNAV</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_hdg"><span class="lbl">HDG</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_alt"><span class="lbl">ALT</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot mcp-win" data-id="mcp_fd_r"><span class="lbl">FD R</span><span class="val" data-val>OFF</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main instruments -->
+        <div class="panel-view" data-panel-view="main">
+          <div class="panel-frame">
+            <div class="panel-title">Main Instrument · 主仪表区示意</div>
+            <div class="zone">
+              <div class="zone-label">起落架指示 / 手柄 / 自动刹车</div>
+              <div class="row">
+                <button type="button" class="hot lit" data-id="gear_lights" style="min-width:120px">
+                  <span class="lbl">GEAR LIGHTS</span>
+                  <span class="gear-lights" aria-hidden="true"><span class="g"></span><span class="g"></span><span class="g"></span></span>
+                  <span class="val" data-val>亮</span>
+                </button>
+                <button type="button" class="hot" data-id="gear_lever"><span class="lbl">GEAR</span><span class="val" data-val>DN</span></button>
+                <button type="button" class="hot" data-id="autobrake"><span class="lbl">AUTOBRAKE</span><span class="val" data-val>RTO</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">警告测试</div>
+              <div class="row">
+                <button type="button" class="hot" data-id="mach_warn_test"><span class="lbl">MACH/AS WARN TEST</span><span class="val" data-val>—</span></button>
+                <button type="button" class="hot" data-id="stall_warn_test"><span class="lbl">STALL WARN TEST</span><span class="val" data-val>—</span></button>
+              </div>
+            </div>
+            <div class="zone">
+              <div class="zone-label">简化 PFD / ND（示意，非工作显示器）</div>
+              <div class="row" style="opacity:.7;pointer-events:none">
+                <div class="hot mcp-win" style="min-width:40%;min-height:80px"><span class="lbl">PFD</span><span class="val">示意</span></div>
+                <div class="hot mcp-win" style="min-width:40%;min-height:80px"><span class="lbl">ND MAP</span><span class="val">示意</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pedestal -->
+        <div class="panel-view" data-panel-view="pedestal">
+          <div class="panel-frame">
+            <div class="panel-title">Pedestal · 中央操纵台示意</div>
+            <div class="pedestal-grid">
+              <div class="col">
+                <button type="button" class="hot" data-id="speedbrake"><span class="lbl">SPEED BRAKE</span><span class="val" data-val>DOWN</span></button>
+                <button type="button" class="hot" data-id="flap_lever"><span class="lbl">FLAPS</span><span class="val" data-val>UP</span></button>
+                <button type="button" class="hot" data-id="stab_trim"><span class="lbl">STAB TRIM</span><span class="val" data-val>—</span></button>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <button type="button" class="hot" data-id="throttle_1" style="padding-top:8px"><span class="lbl">THR 1</span><div class="throttle"></div></button>
+                  <button type="button" class="hot" data-id="throttle_2" style="padding-top:8px"><span class="lbl">THR 2</span><div class="throttle"></div></button>
+                </div>
+                <div class="row">
+                  <button type="button" class="hot fuel-lever" data-id="fuel_lever_1"><span class="lbl">FUEL 1</span><span class="val" data-val>CUTOFF</span></button>
+                  <button type="button" class="hot fuel-lever" data-id="fuel_lever_2"><span class="lbl">FUEL 2</span><span class="val" data-val>CUTOFF</span></button>
+                </div>
+              </div>
+              <div class="col">
+                <button type="button" class="hot" data-id="park_brake"><span class="lbl">PARKING BRAKE</span><span class="val" data-val>SET</span></button>
+                <button type="button" class="hot" data-id="transponder"><span class="lbl">XPNDR</span><span class="val" data-val>STBY</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="coach" id="coach">
+        <div class="progress-line" id="coach-progress"></div>
+        <div class="bar"><span id="coach-bar" style="width:0%"></span></div>
+        <h2 id="coach-title">准备</h2>
+        <div><span class="ref" id="coach-ref">—</span></div>
+        <p class="action" id="coach-action"></p>
+        <p class="explain" id="coach-explain"></p>
+        <p class="feedback" id="coach-feedback"></p>
+        <div class="btn-row">
+          <button type="button" class="btn secondary" id="btn-hint">提示面板</button>
+          <button type="button" class="btn ghost" id="btn-exit-scenario">退出场景</button>
+        </div>
+        <p class="meta" style="font-size:.72rem;color:#94a3b8;margin:8px 0 0">个人学习辅助，运行以公司现行 FCOM/EFB 为准。</p>
+      </aside>
+    </section>
+  </div>
+
+  <script src="./js/cockpit.js?v=5"></script>
+</body>
+</html>
