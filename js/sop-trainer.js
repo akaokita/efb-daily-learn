@@ -1,5 +1,5 @@
 (() => {
-  const IMG_W = 1400;
+  const IMG_W = 1800;
   const state = {
     data: null,
     phaseIdx: 0,
@@ -301,14 +301,16 @@
   }
 
   async function boot() {
-    const res = await fetch("./data/sop-flow.json?v=9");
+    const res = await fetch("./data/sop-flow.json?v=10");
     state.data = await res.json();
     const dataUrl = window.COCKPIT_IMAGE_DATA_URL;
-    img.src = dataUrl || (state.data.image + "?v=9");
+    const assetUrl = (state.data.image || "./assets/cockpit-company.jpg") + "?v=10";
+    img.src = dataUrl || assetUrl;
     await new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = () => {
-        if (dataUrl && img.src !== dataUrl) { img.src = dataUrl; return; }
+        if (dataUrl && !String(img.src || "").startsWith("data:")) { img.src = dataUrl; return; }
+        if (!dataUrl && img.src !== assetUrl) { img.src = assetUrl; return; }
         reject(new Error("cockpit image failed"));
       };
     });
@@ -350,6 +352,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js?v=9").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=10").catch(() => {});
   }
 })();
