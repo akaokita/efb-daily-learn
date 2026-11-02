@@ -1,17 +1,22 @@
-const CACHE = "efb-learn-v8";
+const CACHE = "efb-learn-v9";
 const ASSETS = [
   "./",
   "./index.html",
   "./cockpit.html",
+  "./sop-trainer.html",
   "./css/app.css",
   "./css/cockpit.css",
+  "./css/sop-trainer.css",
   "./js/app.js",
   "./js/cockpit.js",
   "./js/cockpit-boot.js",
   "./js/cockpit-scene.js",
+  "./js/sop-trainer.js",
   "./js/vendor/three.module.js",
   "./data/lessons.json",
   "./data/cockpit-scenarios.json",
+  "./data/sop-flow.json",
+  "./assets/cockpit-company.jpg",
   "./manifest.webmanifest",
   "./icons/icon.svg"
 ];
