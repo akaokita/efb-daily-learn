@@ -1,4 +1,4 @@
-const CACHE = "efb-learn-v9";
+const CACHE = "efb-learn-v10";
 const ASSETS = [
   "./",
   "./index.html",
@@ -13,9 +13,20 @@ const ASSETS = [
   "./js/cockpit-scene.js",
   "./js/sop-trainer.js",
   "./js/cockpit-image-loader.js",
-  "./js/cockpit-image-part2.js",
-  "./js/cockpit-image-part1.js",
   "./js/cockpit-image-part0.js",
+  "./js/cockpit-image-part1.js",
+  "./js/cockpit-image-part2.js",
+  "./js/cockpit-image-part3.js",
+  "./js/cockpit-image-part4.js",
+  "./js/cockpit-image-part5.js",
+  "./js/cockpit-image-part6.js",
+  "./js/cockpit-image-part7.js",
+  "./js/cockpit-image-part8.js",
+  "./js/cockpit-image-part9.js",
+  "./js/cockpit-image-part10.js",
+  "./js/cockpit-image-part11.js",
+  "./js/cockpit-image-part12.js",
+  "./js/cockpit-image-part13.js",
   "./js/vendor/three.module.js",
   "./data/lessons.json",
   "./data/cockpit-scenarios.json",
