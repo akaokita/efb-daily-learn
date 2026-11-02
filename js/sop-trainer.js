@@ -1,5 +1,5 @@
 (() => {
-  const IMG_W = 1800;
+  let IMG_W = 3906;
   const state = {
     data: null,
     phaseIdx: 0,
@@ -301,10 +301,10 @@
   }
 
   async function boot() {
-    const res = await fetch("./data/sop-flow.json?v=10");
+    const res = await fetch("./data/sop-flow.json?v=11");
     state.data = await res.json();
     const dataUrl = window.COCKPIT_IMAGE_DATA_URL;
-    const assetUrl = (state.data.image || "./assets/cockpit-company.jpg") + "?v=10";
+    const assetUrl = (state.data.image || "./assets/cockpit-company.jpg") + "?v=11";
     img.src = dataUrl || assetUrl;
     await new Promise((resolve, reject) => {
       img.onload = resolve;
@@ -315,6 +315,10 @@
       };
     });
     state.imgH = img.naturalHeight;
+    if (img.naturalWidth > 0) {
+      // Keep layout manageable on phone, but feed full-res pixels into the browser.
+      IMG_W = Math.min(img.naturalWidth, Math.max(2800, Math.floor(img.naturalWidth * 0.5)));
+    }
     img.style.width = IMG_W + "px";
     buildPhaseList();
     fit();
@@ -352,6 +356,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js?v=10").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=11").catch(() => {});
   }
 })();
