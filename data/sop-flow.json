@@ -1,0 +1,1695 @@
+{
+  "version": 1,
+  "title": "B737-NG 正常程序互动教学",
+  "disclaimer": "仅供个人入职学习 · 以现行公司手册为准 · 非正式运行依据",
+  "image": "./assets/cockpit-company.jpg",
+  "imageNote": "公司座舱展开图（教学标注版）",
+  "phases": [
+    {
+      "id": "power_on",
+      "title": "电源接通",
+      "sop": "02-06",
+      "blurb": "飞机未接通交流电源时执行，确保安全上电。",
+      "steps": [
+        {
+          "id": "p01",
+          "role": "BOTH",
+          "action": "确认电瓶电门护盖盖好（接通）。",
+          "hint": "点按前顶板电瓶电门区域。",
+          "hotspot": "battery",
+          "sopRef": "02-06",
+          "why": "电池供电后勿移动飞机，直至ISFD校准完成。"
+        },
+        {
+          "id": "p02",
+          "role": "BOTH",
+          "action": "确认备用电源电门护盖盖好，STANDBY PWR OFF灯灭。",
+          "hint": "备用电源在电瓶附近。",
+          "hotspot": "standby_pwr",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "p03",
+          "role": "BOTH",
+          "action": "确认备用襟翼主电门护盖盖好。",
+          "hint": "飞行控制/备用襟翼区。",
+          "hotspot": "alt_flaps",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "p04",
+          "role": "BOTH",
+          "action": "雨刷选择器置于PARK。",
+          "hint": "前顶板雨刷旋钮。",
+          "hotspot": "wipers",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "p05",
+          "role": "BOTH",
+          "action": "电动液压泵电门置于关。",
+          "hint": "液压面板。",
+          "hotspot": "hyd_pumps",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "p06",
+          "role": "BOTH",
+          "action": "起落架手柄在放下位，绿灯亮、红灯灭。",
+          "hint": "主仪表板起落架手柄。",
+          "hotspot": "gear",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "p07",
+          "role": "BOTH",
+          "action": "如用外电：GRD POWER AVAILABLE亮后接通地面电源电门。",
+          "hint": "电气板地面电源。",
+          "hotspot": "grd_pwr",
+          "sopRef": "02-06",
+          "why": "证实SOURCE OFF、TRANSFER BUS OFF、STANDBY PWR OFF灯灭。"
+        },
+        {
+          "id": "p08",
+          "role": "BOTH",
+          "action": "确认1发/APU/2发灭火手柄按入。",
+          "hint": "中央操纵台火警手柄。",
+          "hotspot": "fire_handles",
+          "sopRef": "02-06",
+          "why": "起动APU前先确认灭火手柄按入。"
+        },
+        {
+          "id": "p09",
+          "role": "BOTH",
+          "action": "火警过热测试：FAULT/INOP位检查，再OVHT/FIRE位检查（先通知地面）。",
+          "hint": "火警测试电门。",
+          "hotspot": "fire_test",
+          "sopRef": "02-06",
+          "why": "教学简化：完整灯视在真机按手册完成。"
+        },
+        {
+          "id": "p10",
+          "role": "BOTH",
+          "action": "起动APU；APU GEN OFF BUS亮后接通APU发电机。",
+          "hint": "先点APU电门，再点APU发电机。",
+          "hotspot": "apu_start",
+          "sopRef": "02-06",
+          "why": "中央油箱>453kg才开中央油泵；无人看管勿开中央油泵。"
+        },
+        {
+          "id": "p11",
+          "role": "BOTH",
+          "action": "接通APU发电机汇流条电门，证实SOURCE OFF等灯灭。",
+          "hint": "APU发电机电门。",
+          "hotspot": "apu_gen",
+          "sopRef": "02-06"
+        }
+      ]
+    },
+    {
+      "id": "preflight_init",
+      "title": "飞行前初始",
+      "sop": "02-07",
+      "blurb": "电源接通完成后；优先完成IRS校准与关键状态检查。",
+      "steps": [
+        {
+          "id": "i01",
+          "role": "BOTH",
+          "action": "IRS方式选择器：关→再NAV，证实ON DC亮后灭、ALIGN亮。",
+          "hint": "后顶板IRS旋钮。",
+          "hotspot": "irs",
+          "sopRef": "02-07",
+          "why": "每次飞行应完全校准；时间紧可用快速校准补充程序。"
+        },
+        {
+          "id": "i02",
+          "role": "BOTH",
+          "action": "检查机组氧气压力足够放行；旅客氧气电门护盖盖好、PASS OXY ON灭。",
+          "hint": "氧气面板。",
+          "hotspot": "crew_oxy",
+          "sopRef": "02-07"
+        },
+        {
+          "id": "i03",
+          "role": "BOTH",
+          "action": "ELT电门护盖盖好，ELT灯灭。",
+          "hint": "后顶板ELT。",
+          "hotspot": "elt",
+          "sopRef": "02-07"
+        },
+        {
+          "id": "i04",
+          "role": "BOTH",
+          "action": "勤务内话电门关。",
+          "hint": "后顶板勤务内话。",
+          "hotspot": "svc_interphone",
+          "sopRef": "02-07"
+        },
+        {
+          "id": "i05",
+          "role": "BOTH",
+          "action": "EEC电门开；反推等灯灭。",
+          "hint": "发动机面板EEC。",
+          "hotspot": "eec",
+          "sopRef": "02-07"
+        },
+        {
+          "id": "i06",
+          "role": "BOTH",
+          "action": "飞行记录器电门护盖盖好。",
+          "hint": "飞行记录器。",
+          "hotspot": "flight_recorder",
+          "sopRef": "02-07"
+        },
+        {
+          "id": "i07",
+          "role": "BOTH",
+          "action": "马赫空速警告与失速警告测试（一次一个），听咔嗒/杆抖。",
+          "hint": "测试按钮。",
+          "hotspot": "mach_stall_test",
+          "sopRef": "02-07",
+          "why": "失速警告测试需AC转换汇流条通电可达4分钟。"
+        },
+        {
+          "id": "i08",
+          "role": "BOTH",
+          "action": "停留刹车按需设定（外检查刹车磨损指示器时需刹住）。",
+          "hint": "停留刹车手柄。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-07"
+        }
+      ]
+    },
+    {
+      "id": "cdu_preflight",
+      "title": "CDU飞行前",
+      "sop": "02-08",
+      "blurb": "初始/导航数据须在仪表检查前完成；性能数据在起动前检查单前完成。另一飞行员须证实。",
+      "steps": [
+        {
+          "id": "c01",
+          "role": "BOTH",
+          "action": "获取离场ATIS/气象信息。",
+          "hint": "通用要点：可用EFB或ATIS，再回CDU。",
+          "hotspot": "vhf",
+          "sopRef": "02-08",
+          "why": "通用要点"
+        },
+        {
+          "id": "c02",
+          "role": "BOTH",
+          "action": "IDENT页：证实机型、发动机额定、导航数据库有效期。",
+          "hint": "左或右CDU。",
+          "hotspot": "cdu_l",
+          "sopRef": "02-08"
+        },
+        {
+          "id": "c03",
+          "role": "BOTH",
+          "action": "POS INIT：证实时间，在SET IRS POS输入精确位置。",
+          "hint": "CDU位置起始页。",
+          "hotspot": "cdu_l",
+          "sopRef": "02-08"
+        },
+        {
+          "id": "c04",
+          "role": "BOTH",
+          "action": "ROUTE页输入航路；PERF INIT等页面继续按手册填方框项。",
+          "hint": "右座CDU可交叉检查。",
+          "hotspot": "cdu_r",
+          "sopRef": "02-08",
+          "why": "未输入航路风会导致时间和燃油计算误差。"
+        },
+        {
+          "id": "c05",
+          "role": "BOTH",
+          "action": "另一飞行员证实CDU输入。",
+          "hint": "两侧CDU交叉核对。",
+          "hotspot": "cdu_r",
+          "sopRef": "02-08"
+        }
+      ]
+    },
+    {
+      "id": "preflight",
+      "title": "飞行前程序",
+      "sop": "02-09/02-10",
+      "blurb": "合并机长/副驾关键面板设定（灯测后开始，通常副驾主导）。",
+      "steps": [
+        {
+          "id": "f01",
+          "role": "FO",
+          "action": "驾驶舱门关闭并锁好，LOCK FAIL灯灭。",
+          "hint": "驾驶舱门控制。",
+          "hotspot": "cockpit_door",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f02",
+          "role": "FO",
+          "action": "飞行控制电门/扰流板护盖盖好；偏航阻尼开，偏航阻尼灯灭。",
+          "hint": "飞行控制面板。",
+          "hotspot": "flt_control",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f03",
+          "role": "FO",
+          "action": "偏航阻尼电门开。",
+          "hint": "偏航阻尼。",
+          "hotspot": "yaw_damper",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f04",
+          "role": "FO",
+          "action": "备用襟翼主电门护盖盖好，位置电门关。",
+          "hint": "备用襟翼。",
+          "hotspot": "alt_flaps",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f05",
+          "role": "FO",
+          "action": "导航转换面板：VHF NAV/IRS/FMC转正常位。",
+          "hint": "导航转换。",
+          "hotspot": "nav_transfer",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f06",
+          "role": "FO",
+          "action": "燃油交输关；燃油泵电门关（起动前再开）。",
+          "hint": "燃油面板。",
+          "hotspot": "fuel_pumps",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f07",
+          "role": "FO",
+          "action": "电瓶护盖盖好；CAB/UTIL等客舱电源开；备用电源护盖盖好。",
+          "hint": "电气板。",
+          "hotspot": "battery",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f08",
+          "role": "FO",
+          "action": "设备冷却正常；应急出口灯护盖盖好（ARMED）。",
+          "hint": "应急出口灯。",
+          "hotspot": "emer_exit_lights",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f09",
+          "role": "FO",
+          "action": "旅客信号：安全带灯开（加油登机时先关，加油后再开）。",
+          "hint": "旅客信号。",
+          "hotspot": "passenger_signs",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f10",
+          "role": "FO",
+          "action": "雨刷PARK；窗加温开（至少起飞前10分钟）。",
+          "hint": "窗加温。",
+          "hotspot": "window_heat",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f11",
+          "role": "FO",
+          "action": "探头加温AUTO；机翼/发动机防冰关。",
+          "hint": "防冰面板。",
+          "hotspot": "probe_heat",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f12",
+          "role": "FO",
+          "action": "发动机液压泵开，电动液压泵关。",
+          "hint": "液压面板。",
+          "hotspot": "hyd_pumps",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f13",
+          "role": "FO",
+          "action": "空调组件AUTO/HIGH；隔离活门开；发引气开；APU引气开（双引气灯亮属预期）。",
+          "hint": "组件与引气。",
+          "hotspot": "packs",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f14",
+          "role": "FO",
+          "action": "设定飞行高度/着陆高度；增压方式AUTO。",
+          "hint": "增压面板。",
+          "hotspot": "pressurization",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f15",
+          "role": "FO",
+          "action": "着陆/跑道脱离/滑行灯关；防撞灯关；航行灯STEADY；航徽灯夜航开。",
+          "hint": "外部灯光。",
+          "hotspot": "ext_lights",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f16",
+          "role": "FO",
+          "action": "点火选择IGN L或R；发动机起动电门关。",
+          "hint": "起动电门。",
+          "hotspot": "eng_start_switches",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f17",
+          "role": "BOTH",
+          "action": "MCP：航道设定；先开PF侧飞行指引。",
+          "hint": "MCP/飞行指引。",
+          "hotspot": "mcp",
+          "sopRef": "02-09"
+        },
+        {
+          "id": "f18",
+          "role": "BOTH",
+          "action": "EFIS：MAP方式，气压当地场压，气象雷达关。",
+          "hint": "EFIS面板。",
+          "hotspot": "efis_l",
+          "sopRef": "02-10"
+        },
+        {
+          "id": "f19",
+          "role": "BOTH",
+          "action": "起落架手柄放下，绿指示亮。",
+          "hint": "起落架。",
+          "hotspot": "gear",
+          "sopRef": "02-06"
+        },
+        {
+          "id": "f20",
+          "role": "FO",
+          "action": "应答机面板设定（此时多为STBY，编码稍后）。",
+          "hint": "应答机。",
+          "hotspot": "xpdr",
+          "sopRef": "02-10"
+        }
+      ]
+    },
+    {
+      "id": "before_start",
+      "title": "起动前程序",
+      "sop": "02-11",
+      "blurb": "飞行前检查单完成前不得执行；需与机务建立内话/手势。",
+      "steps": [
+        {
+          "id": "b01",
+          "role": "FO",
+          "action": "完成CDU进离场与性能数据；设置应答机编码。",
+          "hint": "CDU与应答机。",
+          "hotspot": "cdu_l",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b02",
+          "role": "CA",
+          "action": "对照起飞性能/OPT核对起飞数据；核对RTE LEGS。",
+          "hint": "左右CDU交叉检查。",
+          "hotspot": "cdu_r",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b03",
+          "role": "FO",
+          "action": "安定面配平设置到起飞单位（绿区）。",
+          "hint": "安定面配平轮。",
+          "hotspot": "stab_trim",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b04",
+          "role": "CA",
+          "action": "MCP：A/T预位；速度窗V2；按需VNAV/LNAV；航向=跑道航向；高度=放行高度。",
+          "hint": "MCP。",
+          "hotspot": "mcp",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b05",
+          "role": "CA",
+          "action": "自动油门预位。",
+          "hint": "A/T ARM。",
+          "hotspot": "at_arm",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b06",
+          "role": "BOTH",
+          "action": "完成滑行/起飞简令。",
+          "hint": "通用要点：简令卡。",
+          "hotspot": "mcp",
+          "sopRef": "02-11",
+          "why": "通用要点"
+        },
+        {
+          "id": "b07",
+          "role": "FO",
+          "action": "外部舱门确认关好。",
+          "hint": "通用要点：与客舱/机务确认。",
+          "hotspot": "cockpit_door",
+          "sopRef": "02-11",
+          "why": "通用要点"
+        },
+        {
+          "id": "b08",
+          "role": "FO",
+          "action": "所需燃油泵开（中央油箱条件适用）；核实低压灯灭。",
+          "hint": "燃油泵。",
+          "hotspot": "fuel_pumps",
+          "sopRef": "02-11",
+          "why": "中央油箱>453kg才开中央油泵。"
+        },
+        {
+          "id": "b09",
+          "role": "FO",
+          "action": "液压：推出且未插旁通销时A关B开；否则电动泵开，压力≥2800psi。",
+          "hint": "液压泵。",
+          "hotspot": "hyd_pumps",
+          "sopRef": "02-11",
+          "why": "WARNING：勿在未插旁通销时增压A系统。"
+        },
+        {
+          "id": "b10",
+          "role": "FO",
+          "action": "防撞灯开。",
+          "hint": "防撞灯。",
+          "hotspot": "ext_lights",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b11",
+          "role": "CA",
+          "action": "检查配平可自由移动：安定面绿区、副翼0、方向舵0。",
+          "hint": "配平。",
+          "hotspot": "rudder_trim",
+          "sopRef": "02-11"
+        },
+        {
+          "id": "b12",
+          "role": "BOTH",
+          "action": "宣布并完成「起动前检查单」。",
+          "hint": "通用要点：检查单。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-11",
+          "why": "通用要点"
+        }
+      ]
+    },
+    {
+      "id": "pushback",
+      "title": "推出/拖飞机",
+      "sop": "02-12",
+      "blurb": "完成起动前检查单后；推出中可并行发动机起动。",
+      "steps": [
+        {
+          "id": "u01",
+          "role": "CA",
+          "action": "与地面机务建立通讯。",
+          "hint": "音频面板选对内话/服务。",
+          "hotspot": "audio",
+          "sopRef": "02-12"
+        },
+        {
+          "id": "u02",
+          "role": "FO",
+          "action": "应答机按机场细则/ATC设AUTO或XPNDR等。",
+          "hint": "应答机。",
+          "hotspot": "xpdr",
+          "sopRef": "02-12"
+        },
+        {
+          "id": "u03",
+          "role": "FO",
+          "action": "飞机初次移动时循环一次安全带灯。",
+          "hint": "旅客信号。",
+          "hotspot": "passenger_signs",
+          "sopRef": "02-12"
+        },
+        {
+          "id": "u04",
+          "role": "CA",
+          "action": "按机务指令设置或松开停留刹车；勿握前轮转弯手轮、勿踩刹车停拖。",
+          "hint": "停留刹车。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-12"
+        },
+        {
+          "id": "u05",
+          "role": "BOTH",
+          "action": "推出完成：证实拖把脱开、前轮转弯锁销拔出。",
+          "hint": "通用要点。",
+          "hotspot": "towheel",
+          "sopRef": "02-12",
+          "why": "通用要点"
+        },
+        {
+          "id": "u06",
+          "role": "FO",
+          "action": "A系统电动液压泵核实开，低压灯灭，压力≥2800psi。",
+          "hint": "液压。",
+          "hotspot": "hyd_pumps",
+          "sopRef": "02-12"
+        }
+      ]
+    },
+    {
+      "id": "engine_start",
+      "title": "发动机起动",
+      "sop": "02-13",
+      "blurb": "正常顺序先2发后1发；需地面许可。",
+      "steps": [
+        {
+          "id": "e01",
+          "role": "CA",
+          "action": "原地起动时证实停留刹车刹住、灯亮；联系机务申请起动。",
+          "hint": "停留刹车。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e02",
+          "role": "FO",
+          "action": "两空调组件关。",
+          "hint": "组件电门。",
+          "hotspot": "packs",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e03",
+          "role": "FO",
+          "action": "次要发动机指示选择好；2发起动电门扳到GRD并计时。",
+          "hint": "起动电门。",
+          "hotspot": "eng_start_switches",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e04",
+          "role": "BOTH",
+          "action": "监控N2；N1转动后，N2达25%或最大冷转≥20%时，起动手柄移至慢车卡位。",
+          "hint": "起动手柄（勿旋拧）。",
+          "hotspot": "start_levers",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e05",
+          "role": "FO",
+          "action": "监控燃油流量与EGT；N2约56%(NG)/63%(MAX)起动电门应跳OFF。",
+          "hint": "发动机显示。",
+          "hotspot": "upper_du",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e06",
+          "role": "BOTH",
+          "action": "发动机稳定慢车后，按同样程序起动1发。",
+          "hint": "起动电门+起动手柄。",
+          "hotspot": "eng_start_switches",
+          "sopRef": "02-13"
+        },
+        {
+          "id": "e07",
+          "role": "FO",
+          "action": "起动后按需恢复组件等（详见滑行前）。",
+          "hint": "组件。",
+          "hotspot": "packs",
+          "sopRef": "02-13"
+        }
+      ]
+    },
+    {
+      "id": "before_taxi",
+      "title": "滑行前程序",
+      "sop": "02-14",
+      "blurb": "发动机慢车稳定、与机务断开内话且设备人员移开后。",
+      "steps": [
+        {
+          "id": "t01",
+          "role": "FO",
+          "action": "发电机1/2开。",
+          "hint": "发电机电门。",
+          "hotspot": "gen1",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t02",
+          "role": "FO",
+          "action": "探头加温开；机翼/发防冰按需。",
+          "hint": "探头加温。",
+          "hotspot": "probe_heat",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t03",
+          "role": "FO",
+          "action": "组件AUTO；隔离AUTO；APU引气关；APU关。",
+          "hint": "组件/引气/APU。",
+          "hotspot": "bleeds",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t04",
+          "role": "CA",
+          "action": "起动手柄核实慢车卡位。",
+          "hint": "起动手柄。",
+          "hotspot": "start_levers",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t05",
+          "role": "FO",
+          "action": "起动电门置于连续(CONT)。",
+          "hint": "起动电门。",
+          "hotspot": "eng_start_switches",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t06",
+          "role": "CA",
+          "action": "指令起飞襟翼；FO设置并核实LE FLAPS EXT绿。",
+          "hint": "襟翼手柄。",
+          "hotspot": "flap_lever",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t07",
+          "role": "CA",
+          "action": "全行程检查飞行操纵（盘/杆/舵），一次一个方向。",
+          "hint": "驾驶盘/脚蹬（图上点减速板区示意检查操纵）。",
+          "hotspot": "speedbrake",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t08",
+          "role": "FO",
+          "action": "应答机ALT ON/XPNDR/AUTO；再现检查。",
+          "hint": "应答机。",
+          "hotspot": "xpdr",
+          "sopRef": "02-14"
+        },
+        {
+          "id": "t09",
+          "role": "BOTH",
+          "action": "完成滑行前检查单。",
+          "hint": "通用要点。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-14",
+          "why": "通用要点"
+        }
+      ]
+    },
+    {
+      "id": "taxi_takeoff",
+      "title": "滑出·起飞前·起飞",
+      "sop": "02-15~02-17",
+      "blurb": "精简关键动作；完整喊话以现行SOP为准。",
+      "steps": [
+        {
+          "id": "x01",
+          "role": "PM",
+          "action": "获滑行许可后：滑行灯开；夜航按需开跑道脱离灯。",
+          "hint": "滑行灯。",
+          "hotspot": "taxi_lights",
+          "sopRef": "02-15"
+        },
+        {
+          "id": "x02",
+          "role": "PF",
+          "action": "确认侧方无影响，松刹车滑出，N1通常＜40%。",
+          "hint": "推力手柄。",
+          "hotspot": "throttles",
+          "sopRef": "02-15"
+        },
+        {
+          "id": "x03",
+          "role": "BOTH",
+          "action": "接近等待点：更新起飞简令；确认客舱起飞准备。",
+          "hint": "通用要点。",
+          "hotspot": "mcp",
+          "sopRef": "02-16",
+          "why": "通用要点"
+        },
+        {
+          "id": "x04",
+          "role": "PM",
+          "action": "进跑道许可后：安全带AUTO再ON；航行灯STROBE&STEADY；固定着陆灯开。",
+          "hint": "灯光。",
+          "hotspot": "landing_lights",
+          "sopRef": "02-16"
+        },
+        {
+          "id": "x05",
+          "role": "PF",
+          "action": "起飞许可后口令「开灯」；PM开全部着陆灯。",
+          "hint": "着陆灯。",
+          "hotspot": "landing_lights",
+          "sopRef": "02-17"
+        },
+        {
+          "id": "x06",
+          "role": "PF",
+          "action": "对正跑道，口令「起飞，计时」；前推约N1 40%稳定。",
+          "hint": "推力手柄。",
+          "hotspot": "throttles",
+          "sopRef": "02-17"
+        },
+        {
+          "id": "x07",
+          "role": "PF",
+          "action": "口令「调定起飞推力」，按压TO/GA；PM证实推力调定。",
+          "hint": "推力手柄/MCP相关。",
+          "hotspot": "throttles",
+          "sopRef": "02-17"
+        },
+        {
+          "id": "x08",
+          "role": "BOTH",
+          "action": "80节、V1、VR抬轮等喊话按SOP执行（教学点到为止）。",
+          "hint": "PFD速度带。",
+          "hotspot": "pfd_l",
+          "sopRef": "02-17",
+          "why": "通用要点：完整喊话以现行手册为准。"
+        },
+        {
+          "id": "x09",
+          "role": "PF",
+          "action": "正升率后收轮。",
+          "hint": "起落架手柄。",
+          "hotspot": "gear",
+          "sopRef": "02-17"
+        },
+        {
+          "id": "x10",
+          "role": "PF",
+          "action": "按计划收襟翼。",
+          "hint": "襟翼手柄。",
+          "hotspot": "flap_lever",
+          "sopRef": "02-17"
+        }
+      ]
+    },
+    {
+      "id": "enroute",
+      "title": "爬升·巡航·进近·着陆",
+      "sop": "02-18~02-24",
+      "blurb": "精简为阶段检查点，不逐钮教学。",
+      "steps": [
+        {
+          "id": "r01",
+          "role": "BOTH",
+          "action": "爬升：按公司高度程序转换气压；监控MCP高度与垂直模式。",
+          "hint": "MCP。",
+          "hotspot": "mcp",
+          "sopRef": "02-18",
+          "why": "通用要点"
+        },
+        {
+          "id": "r02",
+          "role": "BOTH",
+          "action": "巡航：监视燃油、航路、气象；雷达按需。",
+          "hint": "EFIS气象。",
+          "hotspot": "wx_radar",
+          "sopRef": "02-19",
+          "why": "通用要点"
+        },
+        {
+          "id": "r03",
+          "role": "BOTH",
+          "action": "下降进近：完成进近简令；CDU进近页与最低标准设定。",
+          "hint": "CDU+EFIS最低标准。",
+          "hotspot": "cdu_l",
+          "sopRef": "02-21",
+          "why": "通用要点"
+        },
+        {
+          "id": "r04",
+          "role": "BOTH",
+          "action": "进近：襟翼/起落架按构型；减速板预位（着陆）。",
+          "hint": "襟翼/起落架/减速板。",
+          "hotspot": "flap_lever",
+          "sopRef": "02-22",
+          "why": "通用要点"
+        },
+        {
+          "id": "r05",
+          "role": "BOTH",
+          "action": "着陆：减速板自动放出核实；反推按需；脱离跑道。",
+          "hint": "减速板手柄。",
+          "hotspot": "speedbrake",
+          "sopRef": "02-24",
+          "why": "通用要点"
+        }
+      ]
+    },
+    {
+      "id": "after_landing",
+      "title": "着陆后程序",
+      "sop": "02-25",
+      "blurb": "脱离着陆跑道后开始；建议发动机冷却≥3分钟。",
+      "steps": [
+        {
+          "id": "a01",
+          "role": "CA",
+          "action": "减速板手柄移至或核实DOWN位。",
+          "hint": "减速板。",
+          "hotspot": "speedbrake",
+          "sopRef": "02-25"
+        },
+        {
+          "id": "a02",
+          "role": "PM",
+          "action": "按需起动APU；探头加温AUTO；着陆灯关。",
+          "hint": "APU与灯光。",
+          "hotspot": "apu_start",
+          "sopRef": "02-25"
+        },
+        {
+          "id": "a03",
+          "role": "PM",
+          "action": "发动机起动电门关；航行灯STEADY。",
+          "hint": "起动电门/航行灯。",
+          "hotspot": "eng_start_switches",
+          "sopRef": "02-25"
+        },
+        {
+          "id": "a04",
+          "role": "BOTH",
+          "action": "气象雷达关。",
+          "hint": "EFIS气象。",
+          "hotspot": "wx_radar",
+          "sopRef": "02-25"
+        },
+        {
+          "id": "a05",
+          "role": "PM",
+          "action": "自动刹车关；襟翼收上；配平回绿区按需。",
+          "hint": "自动刹车与襟翼。",
+          "hotspot": "autobrake",
+          "sopRef": "02-25"
+        },
+        {
+          "id": "a06",
+          "role": "PM",
+          "action": "襟翼手柄收上。",
+          "hint": "襟翼。",
+          "hotspot": "flap_lever",
+          "sopRef": "02-25"
+        }
+      ]
+    },
+    {
+      "id": "shutdown",
+      "title": "关车·安全检查",
+      "sop": "02-26/02-27",
+      "blurb": "到停机位后关车；冷却不足易导致性能衰减。离机前安全检查。",
+      "steps": [
+        {
+          "id": "s01",
+          "role": "CA",
+          "action": "核实停留刹车设置、灯亮。",
+          "hint": "停留刹车。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s02",
+          "role": "FO",
+          "action": "建立APU或外电电源，报「电源建立」。",
+          "hint": "APU发电机或地面电源。",
+          "hotspot": "apu_gen",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s03",
+          "role": "CA",
+          "action": "证实电源后宣布「关车」。",
+          "hint": "起动手柄将切断。",
+          "hotspot": "start_levers",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s04",
+          "role": "CA",
+          "action": "发动机起动手柄切断；观察N1/N2/EGT下降。",
+          "hint": "起动手柄（勿旋拧）。",
+          "hotspot": "start_levers",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s05",
+          "role": "FO",
+          "action": "N2<30%后关防撞灯；燃油泵关；电动液压泵关。",
+          "hint": "防撞灯/燃油/液压。",
+          "hotspot": "ext_lights",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s06",
+          "role": "FO",
+          "action": "防冰关；组件按需；隔离开；应答机STBY。",
+          "hint": "防冰与应答机。",
+          "hotspot": "wing_antiice",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s07",
+          "role": "CA",
+          "action": "飞行指引关。",
+          "hint": "飞行指引。",
+          "hotspot": "fd_switches",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s08",
+          "role": "BOTH",
+          "action": "轮档好后松开停留刹车并观察飞机；完成关车检查单。",
+          "hint": "停留刹车。",
+          "hotspot": "parking_brake",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s09",
+          "role": "FO",
+          "action": "旅客离机后驾驶舱门开锁。",
+          "hint": "驾驶舱门。",
+          "hotspot": "cockpit_door",
+          "sopRef": "02-26"
+        },
+        {
+          "id": "s10",
+          "role": "FO",
+          "action": "安全检查：IRS关、应急出口灯关、窗加温关、组件关。",
+          "hint": "IRS与相关电门。",
+          "hotspot": "irs",
+          "sopRef": "02-27"
+        },
+        {
+          "id": "s11",
+          "role": "BOTH",
+          "action": "宣布并完成安全检查检查单；整理驾驶舱离机。",
+          "hint": "通用要点。",
+          "hotspot": "battery",
+          "sopRef": "02-27",
+          "why": "无机务交接时按FCOM补充程序断电，以免损坏电瓶。"
+        }
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "irs",
+      "label": "IRS方式选择器",
+      "x": 0.34,
+      "y": 0.055,
+      "w": 0.12,
+      "h": 0.045,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "crew_oxy",
+      "label": "机组氧气",
+      "x": 0.52,
+      "y": 0.045,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "pass_oxy",
+      "label": "旅客氧气电门",
+      "x": 0.58,
+      "y": 0.055,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "svc_interphone",
+      "label": "勤务内话",
+      "x": 0.46,
+      "y": 0.04,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "eec",
+      "label": "EEC电门",
+      "x": 0.48,
+      "y": 0.07,
+      "w": 0.07,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "flight_recorder",
+      "label": "飞行记录器",
+      "x": 0.64,
+      "y": 0.05,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "mach_stall_test",
+      "label": "马赫/失速警告测试",
+      "x": 0.66,
+      "y": 0.08,
+      "w": 0.08,
+      "h": 0.035,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "elt",
+      "label": "ELT电门",
+      "x": 0.3,
+      "y": 0.035,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "emer_exit_lights",
+      "label": "应急出口灯",
+      "x": 0.3,
+      "y": 0.07,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "le_devices",
+      "label": "前缘装置指示",
+      "x": 0.32,
+      "y": 0.095,
+      "w": 0.08,
+      "h": 0.03,
+      "panel": "aft_oh"
+    },
+    {
+      "id": "flt_control",
+      "label": "飞行控制面板",
+      "x": 0.28,
+      "y": 0.145,
+      "w": 0.08,
+      "h": 0.05,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "yaw_damper",
+      "label": "偏航阻尼",
+      "x": 0.3,
+      "y": 0.195,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "alt_flaps",
+      "label": "备用襟翼",
+      "x": 0.29,
+      "y": 0.22,
+      "w": 0.06,
+      "h": 0.035,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "nav_transfer",
+      "label": "导航转换面板",
+      "x": 0.36,
+      "y": 0.15,
+      "w": 0.06,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "elec_meters",
+      "label": "交直流电表",
+      "x": 0.42,
+      "y": 0.145,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "battery",
+      "label": "电瓶电门",
+      "x": 0.43,
+      "y": 0.195,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "standby_pwr",
+      "label": "备用电源电门",
+      "x": 0.38,
+      "y": 0.195,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "cab_util",
+      "label": "客舱/厨房电源",
+      "x": 0.48,
+      "y": 0.195,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "grd_pwr",
+      "label": "地面电源电门",
+      "x": 0.42,
+      "y": 0.235,
+      "w": 0.06,
+      "h": 0.028,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "apu_gen",
+      "label": "APU发电机电门",
+      "x": 0.48,
+      "y": 0.235,
+      "w": 0.06,
+      "h": 0.028,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "gen1",
+      "label": "1发发电机",
+      "x": 0.4,
+      "y": 0.265,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "gen2",
+      "label": "2发发电机",
+      "x": 0.5,
+      "y": 0.265,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "fuel_pumps",
+      "label": "燃油泵电门",
+      "x": 0.3,
+      "y": 0.26,
+      "w": 0.1,
+      "h": 0.05,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "crossfeed",
+      "label": "燃油交输",
+      "x": 0.34,
+      "y": 0.31,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "hyd_pumps",
+      "label": "液压泵电门",
+      "x": 0.38,
+      "y": 0.3,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "window_heat",
+      "label": "窗加温",
+      "x": 0.54,
+      "y": 0.16,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "probe_heat",
+      "label": "探头加温",
+      "x": 0.54,
+      "y": 0.205,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "wing_antiice",
+      "label": "机翼防冰",
+      "x": 0.54,
+      "y": 0.24,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "eng_antiice",
+      "label": "发动机防冰",
+      "x": 0.59,
+      "y": 0.24,
+      "w": 0.06,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "temp_selectors",
+      "label": "座舱温度选择",
+      "x": 0.62,
+      "y": 0.155,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "packs",
+      "label": "空调组件",
+      "x": 0.6,
+      "y": 0.22,
+      "w": 0.08,
+      "h": 0.035,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "isolation",
+      "label": "隔离活门",
+      "x": 0.63,
+      "y": 0.255,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "bleeds",
+      "label": "引气电门",
+      "x": 0.6,
+      "y": 0.285,
+      "w": 0.1,
+      "h": 0.035,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "pressurization",
+      "label": "座舱增压面板",
+      "x": 0.64,
+      "y": 0.32,
+      "w": 0.08,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "passenger_signs",
+      "label": "旅客信号",
+      "x": 0.48,
+      "y": 0.3,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "equip_cooling",
+      "label": "设备冷却",
+      "x": 0.46,
+      "y": 0.29,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "landing_lights",
+      "label": "着陆灯",
+      "x": 0.34,
+      "y": 0.355,
+      "w": 0.1,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "taxi_lights",
+      "label": "滑行/跑道脱离灯",
+      "x": 0.44,
+      "y": 0.355,
+      "w": 0.08,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "apu_start",
+      "label": "APU电门",
+      "x": 0.52,
+      "y": 0.355,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "eng_start_switches",
+      "label": "发动机起动电门",
+      "x": 0.48,
+      "y": 0.385,
+      "w": 0.1,
+      "h": 0.03,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "ignition_select",
+      "label": "点火选择",
+      "x": 0.44,
+      "y": 0.385,
+      "w": 0.04,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "ext_lights",
+      "label": "航行/防撞/航徽灯",
+      "x": 0.58,
+      "y": 0.355,
+      "w": 0.12,
+      "h": 0.04,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "wipers",
+      "label": "雨刷选择器",
+      "x": 0.36,
+      "y": 0.33,
+      "w": 0.06,
+      "h": 0.025,
+      "panel": "fwd_oh"
+    },
+    {
+      "id": "master_caution_l",
+      "label": "主警戒/火警(左)",
+      "x": 0.28,
+      "y": 0.415,
+      "w": 0.05,
+      "h": 0.035,
+      "panel": "glareshield"
+    },
+    {
+      "id": "efis_l",
+      "label": "机长EFIS",
+      "x": 0.33,
+      "y": 0.42,
+      "w": 0.07,
+      "h": 0.04,
+      "panel": "glareshield"
+    },
+    {
+      "id": "mcp",
+      "label": "方式控制面板MCP",
+      "x": 0.4,
+      "y": 0.415,
+      "w": 0.2,
+      "h": 0.045,
+      "panel": "glareshield"
+    },
+    {
+      "id": "fd_switches",
+      "label": "飞行指引电门",
+      "x": 0.4,
+      "y": 0.42,
+      "w": 0.05,
+      "h": 0.03,
+      "panel": "glareshield"
+    },
+    {
+      "id": "at_arm",
+      "label": "自动油门预位",
+      "x": 0.46,
+      "y": 0.42,
+      "w": 0.04,
+      "h": 0.025,
+      "panel": "glareshield"
+    },
+    {
+      "id": "efis_r",
+      "label": "副驾EFIS",
+      "x": 0.6,
+      "y": 0.42,
+      "w": 0.07,
+      "h": 0.04,
+      "panel": "glareshield"
+    },
+    {
+      "id": "master_caution_r",
+      "label": "主警戒/火警(右)",
+      "x": 0.67,
+      "y": 0.415,
+      "w": 0.05,
+      "h": 0.035,
+      "panel": "glareshield"
+    },
+    {
+      "id": "pfd_l",
+      "label": "机长PFD/ND",
+      "x": 0.3,
+      "y": 0.49,
+      "w": 0.12,
+      "h": 0.08,
+      "panel": "mip"
+    },
+    {
+      "id": "upper_du",
+      "label": "上部发动机显示",
+      "x": 0.44,
+      "y": 0.5,
+      "w": 0.12,
+      "h": 0.07,
+      "panel": "mip"
+    },
+    {
+      "id": "autobrake",
+      "label": "自动刹车",
+      "x": 0.48,
+      "y": 0.485,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "mip"
+    },
+    {
+      "id": "gear",
+      "label": "起落架手柄",
+      "x": 0.56,
+      "y": 0.5,
+      "w": 0.05,
+      "h": 0.06,
+      "panel": "mip"
+    },
+    {
+      "id": "flap_gauge",
+      "label": "襟翼指示",
+      "x": 0.58,
+      "y": 0.545,
+      "w": 0.04,
+      "h": 0.035,
+      "panel": "mip"
+    },
+    {
+      "id": "pfd_r",
+      "label": "副驾PFD/ND",
+      "x": 0.58,
+      "y": 0.49,
+      "w": 0.12,
+      "h": 0.08,
+      "panel": "mip"
+    },
+    {
+      "id": "isfd",
+      "label": "综合备用飞行显示",
+      "x": 0.42,
+      "y": 0.52,
+      "w": 0.04,
+      "h": 0.05,
+      "panel": "mip"
+    },
+    {
+      "id": "clock_l",
+      "label": "时钟",
+      "x": 0.28,
+      "y": 0.485,
+      "w": 0.04,
+      "h": 0.03,
+      "panel": "mip"
+    },
+    {
+      "id": "cdu_l",
+      "label": "左座CDU",
+      "x": 0.34,
+      "y": 0.6,
+      "w": 0.1,
+      "h": 0.08,
+      "panel": "pedestal"
+    },
+    {
+      "id": "lower_du",
+      "label": "下部显示",
+      "x": 0.45,
+      "y": 0.6,
+      "w": 0.1,
+      "h": 0.07,
+      "panel": "pedestal"
+    },
+    {
+      "id": "cdu_r",
+      "label": "右座CDU",
+      "x": 0.56,
+      "y": 0.6,
+      "w": 0.1,
+      "h": 0.08,
+      "panel": "pedestal"
+    },
+    {
+      "id": "speedbrake",
+      "label": "减速板手柄",
+      "x": 0.4,
+      "y": 0.68,
+      "w": 0.05,
+      "h": 0.05,
+      "panel": "pedestal"
+    },
+    {
+      "id": "throttles",
+      "label": "推力手柄",
+      "x": 0.45,
+      "y": 0.68,
+      "w": 0.1,
+      "h": 0.06,
+      "panel": "pedestal"
+    },
+    {
+      "id": "flap_lever",
+      "label": "襟翼手柄",
+      "x": 0.55,
+      "y": 0.68,
+      "w": 0.05,
+      "h": 0.06,
+      "panel": "pedestal"
+    },
+    {
+      "id": "start_levers",
+      "label": "发动机起动手柄",
+      "x": 0.45,
+      "y": 0.735,
+      "w": 0.1,
+      "h": 0.035,
+      "panel": "pedestal"
+    },
+    {
+      "id": "parking_brake",
+      "label": "停留刹车",
+      "x": 0.4,
+      "y": 0.76,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "pedestal"
+    },
+    {
+      "id": "stab_trim",
+      "label": "安定面配平",
+      "x": 0.38,
+      "y": 0.7,
+      "w": 0.04,
+      "h": 0.05,
+      "panel": "pedestal"
+    },
+    {
+      "id": "towheel",
+      "label": "前轮转弯手轮",
+      "x": 0.32,
+      "y": 0.72,
+      "w": 0.05,
+      "h": 0.04,
+      "panel": "pedestal"
+    },
+    {
+      "id": "fire_handles",
+      "label": "发动机/APU灭火手柄",
+      "x": 0.42,
+      "y": 0.8,
+      "w": 0.16,
+      "h": 0.045,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "fire_test",
+      "label": "过热/火警测试",
+      "x": 0.48,
+      "y": 0.84,
+      "w": 0.08,
+      "h": 0.03,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "vhf",
+      "label": "VHF无线电",
+      "x": 0.34,
+      "y": 0.86,
+      "w": 0.12,
+      "h": 0.05,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "xpdr",
+      "label": "应答机",
+      "x": 0.46,
+      "y": 0.88,
+      "w": 0.1,
+      "h": 0.05,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "audio",
+      "label": "音频控制面板",
+      "x": 0.36,
+      "y": 0.92,
+      "w": 0.12,
+      "h": 0.04,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "rudder_trim",
+      "label": "方向舵配平",
+      "x": 0.46,
+      "y": 0.94,
+      "w": 0.08,
+      "h": 0.035,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "cockpit_door",
+      "label": "驾驶舱门控制",
+      "x": 0.58,
+      "y": 0.94,
+      "w": 0.06,
+      "h": 0.03,
+      "panel": "aft_ped"
+    },
+    {
+      "id": "wx_radar",
+      "label": "气象雷达(EFIS)",
+      "x": 0.6,
+      "y": 0.43,
+      "w": 0.05,
+      "h": 0.025,
+      "panel": "glareshield"
+    }
+  ]
+}

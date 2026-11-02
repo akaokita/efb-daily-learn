@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="description" content="B737 正常程序互动座舱教学。仅供个人入职学习，以现行公司手册为准。" />
+  <link rel="manifest" href="./manifest.webmanifest?v=9" />
+  <link rel="icon" href="./icons/icon.svg" />
+  <link rel="stylesheet" href="./css/sop-trainer.css?v=9" />
+  <title>B737 SOP 互动教学</title>
+</head>
+<body>
+  <div class="banner" role="note">仅供个人入职学习 · 以现行公司手册为准 · 非正式运行依据</div>
+
+  <header class="topbar">
+    <a class="back" href="./index.html" aria-label="返回">←</a>
+    <div class="titles">
+      <h1>正常程序互动教学</h1>
+      <div class="sub" id="phase-title">加载中…</div>
+    </div>
+    <button type="button" class="icon-btn" id="btn-phases" aria-label="选择阶段">☰</button>
+  </header>
+
+  <div class="progress-wrap" aria-hidden="false">
+    <div class="progress-bar"><i id="progress-fill"></i></div>
+    <div class="progress-meta"><span id="step-meta">—</span><span id="role-badge"></span></div>
+  </div>
+
+  <main class="stage">
+    <div class="viewport" id="viewport">
+      <div class="world" id="world">
+        <img id="cockpit" alt="B737 座舱展开图" draggable="false" />
+        <div id="hotspot-layer" class="hotspot-layer"></div>
+      </div>
+    </div>
+    <div class="zoom-tools">
+      <button type="button" id="zoom-out" aria-label="缩小">−</button>
+      <button type="button" id="zoom-reset" aria-label="复位">⊙</button>
+      <button type="button" id="zoom-in" aria-label="放大">+</button>
+      <button type="button" id="focus-target" aria-label="对准当前">◎</button>
+    </div>
+  </main>
+
+  <section class="coach" id="coach" aria-live="polite">
+    <div class="coach-head">
+      <span class="chip" id="sop-ref">SOP</span>
+      <span class="chip muted" id="step-count">0/0</span>
+    </div>
+    <p class="action" id="coach-action">正在加载程序数据…</p>
+    <p class="why" id="coach-why"></p>
+    <p class="hint" id="coach-hint"></p>
+    <div class="coach-actions">
+      <button type="button" class="ghost" id="btn-prev">上一步</button>
+      <button type="button" class="ghost" id="btn-skip">跳过</button>
+      <button type="button" class="primary" id="btn-next-phase">下一阶段</button>
+    </div>
+  </section>
+
+  <div class="drawer" id="phase-drawer" hidden>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <strong>选择阶段</strong>
+        <button type="button" id="drawer-close">关闭</button>
+      </div>
+      <ol id="phase-list"></ol>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="./js/sop-trainer.js?v=9"></script>
+</body>
+</html>
