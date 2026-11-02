@@ -1,5 +1,5 @@
 (() => {
-  const IMG_W = 1800;
+  const IMG_W = 1400;
   const state = {
     data: null,
     phaseIdx: 0,
@@ -303,10 +303,14 @@
   async function boot() {
     const res = await fetch("./data/sop-flow.json?v=9");
     state.data = await res.json();
-    img.src = state.data.image + "?v=9";
+    const dataUrl = window.COCKPIT_IMAGE_DATA_URL;
+    img.src = dataUrl || (state.data.image + "?v=9");
     await new Promise((resolve, reject) => {
       img.onload = resolve;
-      img.onerror = reject;
+      img.onerror = () => {
+        if (dataUrl && img.src !== dataUrl) { img.src = dataUrl; return; }
+        reject(new Error("cockpit image failed"));
+      };
     });
     state.imgH = img.naturalHeight;
     img.style.width = IMG_W + "px";
