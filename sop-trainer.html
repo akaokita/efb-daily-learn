@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#0b1220" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="description" content="B737 正常程序互动座舱教学。仅供个人入职学习，以现行公司手册为准。" />
-  <link rel="manifest" href="./manifest.webmanifest?v=11" />
+  <link rel="manifest" href="./manifest.webmanifest?v=12" />
   <link rel="icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./css/sop-trainer.css?v=11" />
+  <link rel="stylesheet" href="./css/sop-trainer.css?v=12" />
   <title>B737 SOP 互动教学</title>
 </head>
 <body>
@@ -32,6 +32,7 @@
     <div class="viewport" id="viewport">
       <div class="world" id="world">
         <img id="cockpit" alt="B737 座舱展开图" draggable="false" />
+        <div id="tile-layer" class="tile-layer"></div>
         <div id="hotspot-layer" class="hotspot-layer"></div>
       </div>
     </div>
@@ -54,7 +55,7 @@
     <div class="coach-actions">
       <button type="button" class="ghost" id="btn-prev">上一步</button>
       <button type="button" class="ghost" id="btn-skip">跳过</button>
-      <button type="button" class="primary" id="btn-next-phase">下一阶段</button>
+      <button type="button" class="primary" id="btn-next">下一步</button>
     </div>
   </section>
 
@@ -69,59 +70,7 @@
   </div>
 
   <div class="toast" id="toast" hidden></div>
-  <script src="./js/cockpit-image-part0.js?v=11"></script>
-  <script src="./js/cockpit-image-part1.js?v=11"></script>
-  <script src="./js/cockpit-image-part2.js?v=11"></script>
-  <script src="./js/cockpit-image-part3.js?v=11"></script>
-  <script src="./js/cockpit-image-part4.js?v=11"></script>
-  <script src="./js/cockpit-image-part5.js?v=11"></script>
-  <script src="./js/cockpit-image-part6.js?v=11"></script>
-  <script src="./js/cockpit-image-part7.js?v=11"></script>
-  <script src="./js/cockpit-image-part8.js?v=11"></script>
-  <script src="./js/cockpit-image-part9.js?v=11"></script>
-  <script src="./js/cockpit-image-part10.js?v=11"></script>
-  <script src="./js/cockpit-image-part11.js?v=11"></script>
-  <script src="./js/cockpit-image-part12.js?v=11"></script>
-  <script src="./js/cockpit-image-part13.js?v=11"></script>
-  <script src="./js/cockpit-image-part14.js?v=11"></script>
-  <script src="./js/cockpit-image-part15.js?v=11"></script>
-  <script src="./js/cockpit-image-part16.js?v=11"></script>
-  <script src="./js/cockpit-image-part17.js?v=11"></script>
-  <script src="./js/cockpit-image-part18.js?v=11"></script>
-  <script src="./js/cockpit-image-part19.js?v=11"></script>
-  <script src="./js/cockpit-image-part20.js?v=11"></script>
-  <script src="./js/cockpit-image-part21.js?v=11"></script>
-  <script src="./js/cockpit-image-part22.js?v=11"></script>
-  <script src="./js/cockpit-image-part23.js?v=11"></script>
-  <script src="./js/cockpit-image-part24.js?v=11"></script>
-  <script src="./js/cockpit-image-part25.js?v=11"></script>
-  <script src="./js/cockpit-image-part26.js?v=11"></script>
-  <script src="./js/cockpit-image-part27.js?v=11"></script>
-  <script src="./js/cockpit-image-part28.js?v=11"></script>
-  <script src="./js/cockpit-image-part29.js?v=11"></script>
-  <script src="./js/cockpit-image-part30.js?v=11"></script>
-  <script src="./js/cockpit-image-part31.js?v=11"></script>
-  <script src="./js/cockpit-image-part32.js?v=11"></script>
-  <script src="./js/cockpit-image-part33.js?v=11"></script>
-  <script src="./js/cockpit-image-part34.js?v=11"></script>
-  <script src="./js/cockpit-image-part35.js?v=11"></script>
-  <script src="./js/cockpit-image-part36.js?v=11"></script>
-  <script src="./js/cockpit-image-part37.js?v=11"></script>
-  <script src="./js/cockpit-image-part38.js?v=11"></script>
-  <script src="./js/cockpit-image-part39.js?v=11"></script>
-  <script src="./js/cockpit-image-part40.js?v=11"></script>
-  <script src="./js/cockpit-image-part41.js?v=11"></script>
-  <script src="./js/cockpit-image-part42.js?v=11"></script>
-  <script src="./js/cockpit-image-part43.js?v=11"></script>
-  <script src="./js/cockpit-image-part44.js?v=11"></script>
-  <script src="./js/cockpit-image-part45.js?v=11"></script>
-  <script src="./js/cockpit-image-part46.js?v=11"></script>
-  <script src="./js/cockpit-image-part47.js?v=11"></script>
-  <script src="./js/cockpit-image-part48.js?v=11"></script>
-  <script src="./js/cockpit-image-part49.js?v=11"></script>
-  <script src="./js/cockpit-image-part50.js?v=11"></script>
-  <script src="./js/cockpit-image-part51.js?v=11"></script>
-  <script src="./js/cockpit-image-loader.js?v=11"></script>
-  <script src="./js/sop-trainer.js?v=11"></script>
+  <script src="./js/tiles/overview.js?v=12"></script>
+  <script src="./js/sop-trainer.js?v=12"></script>
 </body>
 </html>
