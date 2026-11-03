@@ -48,6 +48,73 @@
 
   function applyTransform() {
     world.style.transform = `translate(${state.tx}px, ${state.ty}px) scale(${state.scale})`;
+    world.style.setProperty("--px", (1 / state.scale) + "px");
+    sizeRing();
+    scheduleTiles();
+  }
+
+  // ---- tiled hi-res rendering (overview always, tiles lazily) ----
+  const tileLayer = $("tile-layer");
+  let META = null;
+  const tileEls = new Map();   // key -> img
+  const pending = new Map();   // key -> true while loading
+  const tileData = new Map();  // key -> dataURL (small LRU)
+  window.__tileCb = (key, url) => {
+    tileData.set(key, url);
+    if (tileData.size > 60) tileData.delete(tileData.keys().next().value);
+    pending.delete(key);
+    const s = document.querySelector(`script[data-tile="${key}"]`); if (s) s.remove();
+    scheduleTiles();
+  };
+  let tileTimer = 0;
+  function scheduleTiles() { if (!META) return; clearTimeout(tileTimer); tileTimer = setTimeout(updateTiles, 120); }
+  function pickLevel() {
+    const px = state.scale * (window.devicePixelRatio || 1); // device px per logical px
+    const ovRatio = (img.naturalWidth || 1600) / IMG_W;
+    if (px <= ovRatio * 1.15) return null;
+    if (px > 1.05) return META.levels[1];
+    return META.levels[0];
+  }
+  function updateTiles() {
+    const lv = pickLevel();
+    const want = new Set();
+    if (lv) {
+      const k = IMG_W / lv.w; // logical px per level px
+      const T = META.tile * k;
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      const x0 = -state.tx / state.scale, y0 = -state.ty / state.scale;
+      const x1 = x0 + vw / state.scale, y1 = y0 + vh / state.scale;
+      const c0 = Math.max(0, Math.floor(x0 / T)), c1 = Math.min(lv.cols - 1, Math.floor(x1 / T));
+      const r0 = Math.max(0, Math.floor(y0 / T)), r1 = Math.min(lv.rows - 1, Math.floor(y1 / T));
+      for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
+        const key = `${lv.z}_${c}_${r}`; want.add(key);
+        if (tileEls.has(key)) continue;
+        if (tileData.has(key)) {
+          const t = document.createElement("img");
+          t.alt = ""; t.draggable = false; t.decoding = "async";
+          t.style.left = c * T + "px"; t.style.top = r * T + "px";
+          t.style.width = Math.min(META.tile, lv.w - c * META.tile) * k + "px";
+          t.style.height = Math.min(META.tile, lv.h - r * META.tile) * k + "px";
+          t.src = tileData.get(key);
+          tileEls.set(key, t); tileLayer.appendChild(t);
+        } else if (!pending.has(key) && pending.size < 6) {
+          pending.set(key, true);
+          const s = document.createElement("script");
+          s.dataset.tile = key; s.async = true;
+          s.src = `./js/tiles/t${key}.js?v=12`;
+          s.onerror = () => { pending.delete(key); s.remove(); };
+          document.head.appendChild(s);
+        }
+      }
+    }
+    // drop tiles no longer needed (keeps decoded memory small on iOS); keep while new ones still loading
+    const loadingWanted = [...want].some((k) => !tileEls.has(k));
+    for (const [key, el] of tileEls) {
+      if (want.has(key)) continue;
+      if (loadingWanted && lv && key.startsWith(lv.z === 2 ? "1_" : "2_")) continue;
+      el.remove(); tileEls.delete(key);
+    }
+    if (pending.size || loadingWanted) scheduleTiles();
   }
 
   function clampPan() {
@@ -73,7 +140,8 @@
     const cx = (h.x + h.w / 2) * IMG_W;
     const cy = (h.y + h.h / 2) * state.imgH;
     // prefer readable zoom on mobile
-    const targetScale = Math.min(2.6, Math.max(state.scale, Math.min(vw / (h.w * IMG_W * 4.5), vh / (h.h * state.imgH * 5.5), 2.4)));
+    // readable zoom: component fills ~22% of the viewport width (clamped)
+    const targetScale = Math.min(2.4, Math.max(0.35, Math.min(vw * 0.22 / (h.w * IMG_W), vh * 0.22 / (h.h * state.imgH))));
     state.scale = soft ? state.scale : targetScale;
     state.tx = vw / 2 - cx * state.scale;
     state.ty = vh * 0.38 - cy * state.scale;
@@ -98,13 +166,32 @@
       el.style.width = h.w * IMG_W + "px";
       el.style.height = h.h * state.imgH + "px";
       if (state.done.has(h.id)) el.classList.add("done");
-      if (step && step.hotspot === h.id) el.classList.add("current");
+      if (step && step.hotspot === h.id && !step.manual) el.classList.add("current");
       el.addEventListener("click", (ev) => {
         ev.stopPropagation();
         onHotspotTap(h.id, el);
       });
       layer.appendChild(el);
     }
+    placeRing(step);
+  }
+
+  let ringEl = null, ringH = null;
+  function sizeRing() {
+    if (!ringEl || !ringH) return;
+    const w = ringH.w * IMG_W, h = ringH.h * state.imgH;
+    const d = Math.max(Math.hypot(w, h) * 1.12 + 14 / state.scale, 40 / state.scale);
+    ringEl.style.width = ringEl.style.height = d + "px";
+  }
+  function placeRing(step) {
+    ringH = step && !step.manual ? state.data.hotspots.find((x) => x.id === step.hotspot) : null;
+    if (!ringH) { if (ringEl) ringEl.remove(); ringEl = null; return; }
+    ringEl = document.createElement("div");
+    ringEl.className = "target-ring";
+    ringEl.style.left = (ringH.x + ringH.w / 2) * IMG_W + "px";
+    ringEl.style.top = (ringH.y + ringH.h / 2) * state.imgH + "px";
+    layer.appendChild(ringEl);
+    sizeRing();
   }
 
   function renderCoach() {
@@ -116,7 +203,11 @@
     $("role-badge").textContent = roleLabel(step.role);
     $("coach-action").textContent = step.action;
     $("coach-why").textContent = step.why || phase.blurb || "";
-    $("coach-hint").textContent = "提示：" + (step.hint || "点按高亮区域");
+    $("coach-hint").textContent = "提示：" + (step.hint || "点按高亮区域") + (step.manual ? "（此步无对应电门，完成后点「我已完成」）" : "");
+    const nb = $("btn-next");
+    const last = state.phaseIdx === state.data.phases.length - 1 && state.stepIdx === phase.steps.length - 1;
+    nb.textContent = step.manual ? "我已完成" : (state.stepIdx === phase.steps.length - 1 ? (last ? "完成" : "下一阶段") : "下一步");
+    nb.classList.toggle("pulse", !!step.manual);
     const pct = ((globalIndex()) / Math.max(1, totalSteps() - 1)) * 100;
     $("progress-fill").style.width = pct + "%";
     // phase list active
@@ -130,7 +221,8 @@
     renderCoach();
     const { step } = current();
     const h = state.data.hotspots.find((x) => x.id === step.hotspot);
-    if (focus !== false) focusHotspot(h);
+    if (focus !== false && !step.manual) focusHotspot(h);
+    else if (focus !== false) { clampPan(); applyTransform(); }
   }
 
   function advance() {
@@ -155,7 +247,7 @@
   function onHotspotTap(id, el) {
     const { step } = current();
     if (!step) return;
-    if (id === step.hotspot) {
+    if (id === step.hotspot && !step.manual) {
       advance();
       return;
     }
@@ -215,7 +307,8 @@
   }
 
   viewport.addEventListener("pointerdown", (e) => {
-    viewport.setPointerCapture(e.pointerId);
+    // don't capture taps that start on a hotspot / button, otherwise the click is retargeted to the viewport
+    if (!(e.target.closest && e.target.closest("button"))) { try { viewport.setPointerCapture(e.pointerId); } catch (_) {} }
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     viewport.classList.add("dragging");
     if (pointers.size === 1) {
@@ -286,7 +379,7 @@
   $("focus-target").onclick = () => { const { step } = current(); focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot)); };
   $("btn-prev").onclick = goPrev;
   $("btn-skip").onclick = skip;
-  $("btn-next-phase").onclick = nextPhase;
+  $("btn-next").onclick = () => advance();
   $("btn-phases").onclick = () => { $("phase-drawer").hidden = false; };
   $("drawer-close").onclick = () => { $("phase-drawer").hidden = true; };
   $("phase-drawer").addEventListener("click", (e) => { if (e.target.id === "phase-drawer") $("phase-drawer").hidden = true; });
@@ -301,25 +394,20 @@
   }
 
   async function boot() {
-    const res = await fetch("./data/sop-flow.json?v=11");
+    const [res, mres] = await Promise.all([fetch("./data/sop-flow.json?v=12"), fetch("./js/tiles/meta.json?v=12")]);
     state.data = await res.json();
-    const dataUrl = window.COCKPIT_IMAGE_DATA_URL;
-    const assetUrl = (state.data.image || "./assets/cockpit-company.jpg") + "?v=11";
-    img.src = dataUrl || assetUrl;
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = () => {
-        if (dataUrl && !String(img.src || "").startsWith("data:")) { img.src = dataUrl; return; }
-        if (!dataUrl && img.src !== assetUrl) { img.src = assetUrl; return; }
-        reject(new Error("cockpit image failed"));
-      };
-    });
-    state.imgH = img.naturalHeight;
-    if (img.naturalWidth > 0) {
-      // Keep layout manageable on phone, but feed full-res pixels into the browser.
-      IMG_W = Math.min(img.naturalWidth, Math.max(2800, Math.floor(img.naturalWidth * 0.5)));
-    }
+    META = await mres.json();
+    IMG_W = META.levels[0].w;
+    state.imgH = IMG_W * META.h / META.w;
+    // safety net: any step without a valid hotspot becomes a manual "我已完成" step
+    const ids = new Set(state.data.hotspots.map((h) => h.id));
+    state.data.phases.forEach((p) => p.steps.forEach((s) => { if (!s.hotspot || !ids.has(s.hotspot)) s.manual = true; }));
+    img.src = window.__COCKPIT_OVERVIEW || "./assets/cockpit-company-lite.jpg?v=12";
+    await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = () => reject(new Error("cockpit image failed")); });
     img.style.width = IMG_W + "px";
+    img.style.height = state.imgH + "px";
+    tileLayer.style.width = IMG_W + "px";
+    tileLayer.style.height = state.imgH + "px";
     buildPhaseList();
     fit();
     // restore
@@ -356,6 +444,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js?v=11").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=12").catch(() => {});
   }
 })();
