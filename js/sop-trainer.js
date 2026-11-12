@@ -1,5 +1,5 @@
 (() => {
-  let IMG_W = 3906;
+  let IMG_W = 7812;
   const state = {
     data: null,
     phaseIdx: 0,
@@ -8,7 +8,7 @@
     scale: 1,
     tx: 0,
     ty: 0,
-    imgH: 1,
+    imgH: 14431,
   };
 
   const $ = (id) => document.getElementById(id);
@@ -46,11 +46,30 @@
     return { phase, step };
   }
 
-  function applyTransform() {
-    world.style.transform = `translate(${state.tx}px, ${state.ty}px) scale(${state.scale})`;
-    world.style.setProperty("--px", (1 / state.scale) + "px");
+  function fitScale() {
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    return Math.min(vw / IMG_W, vh / state.imgH) * 0.98;
+  }
+
+  function clampScale(s) {
+    return Math.min(2.5, Math.max(fitScale(), s));
+  }
+
+  function applyTransform(immediate) {
+    // Size the world in display pixels (scale=1 means 1 CSS px = 1 original px).
+    // Do not CSS-scale the bitmap layer — Safari would upsample a low-res raster.
+    world.style.transform = `translate(${state.tx}px, ${state.ty}px)`;
+    world.style.width = (IMG_W * state.scale) + "px";
+    world.style.height = (state.imgH * state.scale) + "px";
+    world.style.setProperty("--px", "1px");
     sizeRing();
-    scheduleTiles();
+    if (immediate) {
+      clearTimeout(tileTimer);
+      updateTiles();
+    } else {
+      scheduleTiles();
+    }
   }
 
   // ---- tiled hi-res rendering (overview always, tiles lazily) ----
@@ -69,21 +88,23 @@
   let tileTimer = 0;
   function scheduleTiles() { if (!META) return; clearTimeout(tileTimer); tileTimer = setTimeout(updateTiles, 120); }
   function pickLevel() {
-    const px = state.scale * (window.devicePixelRatio || 1); // device px per logical px
-    const ovRatio = (img.naturalWidth || 1600) / IMG_W;
-    if (px <= ovRatio * 1.15) return null;
-    if (px > 1.05) return META.levels[1];
+    // scale=1 is 1 CSS px per original pixel, so this is device px per source px
+    const dpp = state.scale * (window.devicePixelRatio || 1);
+    const ovRatio = (img.naturalWidth || 2400) / IMG_W;
+    if (dpp <= ovRatio * 1.15) return null;
+    if (dpp > 0.9) return META.levels[1];
     return META.levels[0];
   }
   function updateTiles() {
+    if (!META) return;
     const lv = pickLevel();
     const want = new Set();
     if (lv) {
-      const k = IMG_W / lv.w; // logical px per level px
+      const k = (IMG_W * state.scale) / lv.w; // CSS px per level pixel
       const T = META.tile * k;
       const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      const x0 = -state.tx / state.scale, y0 = -state.ty / state.scale;
-      const x1 = x0 + vw / state.scale, y1 = y0 + vh / state.scale;
+      const x0 = -state.tx, y0 = -state.ty;
+      const x1 = x0 + vw, y1 = y0 + vh;
       const c0 = Math.max(0, Math.floor(x0 / T)), c1 = Math.min(lv.cols - 1, Math.floor(x1 / T));
       const r0 = Math.max(0, Math.floor(y0 / T)), r1 = Math.min(lv.rows - 1, Math.floor(y1 / T));
       for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
@@ -92,16 +113,20 @@
         if (tileData.has(key)) {
           const t = document.createElement("img");
           t.alt = ""; t.draggable = false; t.decoding = "async";
-          t.style.left = c * T + "px"; t.style.top = r * T + "px";
-          t.style.width = Math.min(META.tile, lv.w - c * META.tile) * k + "px";
-          t.style.height = Math.min(META.tile, lv.h - r * META.tile) * k + "px";
+          const tw = Math.min(META.tile, lv.w - c * META.tile);
+          const th = Math.min(META.tile, lv.h - r * META.tile);
+          // percent of the sized world so tiles follow width/height changes
+          t.style.left = (c * META.tile / lv.w * 100) + "%";
+          t.style.top = (r * META.tile / lv.h * 100) + "%";
+          t.style.width = (tw / lv.w * 100) + "%";
+          t.style.height = (th / lv.h * 100) + "%";
           t.src = tileData.get(key);
           tileEls.set(key, t); tileLayer.appendChild(t);
-        } else if (!pending.has(key) && pending.size < 6) {
+        } else if (!pending.has(key) && pending.size < 8) {
           pending.set(key, true);
           const s = document.createElement("script");
           s.dataset.tile = key; s.async = true;
-          s.src = `./js/tiles/t${key}.js?v=12`;
+          s.src = `./js/tiles/t${key}.js?v=13`;
           s.onerror = () => { pending.delete(key); s.remove(); };
           document.head.appendChild(s);
         }
@@ -139,32 +164,34 @@
     const vh = viewport.clientHeight;
     const cx = (h.x + h.w / 2) * IMG_W;
     const cy = (h.y + h.h / 2) * state.imgH;
-    // prefer readable zoom on mobile
-    // readable zoom: component fills ~22% of the viewport width (clamped)
-    const targetScale = Math.min(2.4, Math.max(0.35, Math.min(vw * 0.22 / (h.w * IMG_W), vh * 0.22 / (h.h * state.imgH))));
+    // Fill ~28% of the viewport using the hotspot's smaller side so a tall
+    // box (e.g. battery ~80px wide) still lands slightly above 1:1 (~1.2–1.4).
+    const pw = h.w * IMG_W, ph = h.h * state.imgH;
+    const raw = (pw <= ph) ? (vw * 0.28 / pw) : (vh * 0.28 / ph);
+    const targetScale = Math.min(2.0, Math.max(fitScale(), raw));
     state.scale = soft ? state.scale : targetScale;
     state.tx = vw / 2 - cx * state.scale;
     state.ty = vh * 0.38 - cy * state.scale;
     clampPan();
-    applyTransform();
+    applyTransform(true); // prefetch tiles immediately
   }
 
   function renderHotspots() {
     const { step } = current();
     const map = new Map(state.data.hotspots.map((h) => [h.id, h]));
     layer.innerHTML = "";
-    layer.style.width = IMG_W + "px";
-    layer.style.height = state.imgH + "px";
+    layer.style.width = "100%";
+    layer.style.height = "100%";
     for (const h of state.data.hotspots) {
       const el = document.createElement("button");
       el.type = "button";
       el.className = "hotspot";
       el.dataset.id = h.id;
       el.setAttribute("aria-label", h.label);
-      el.style.left = h.x * IMG_W + "px";
-      el.style.top = h.y * state.imgH + "px";
-      el.style.width = h.w * IMG_W + "px";
-      el.style.height = h.h * state.imgH + "px";
+      el.style.left = (h.x * 100) + "%";
+      el.style.top = (h.y * 100) + "%";
+      el.style.width = (h.w * 100) + "%";
+      el.style.height = (h.h * 100) + "%";
       if (state.done.has(h.id)) el.classList.add("done");
       if (step && step.hotspot === h.id && !step.manual) el.classList.add("current");
       el.addEventListener("click", (ev) => {
@@ -179,8 +206,9 @@
   let ringEl = null, ringH = null;
   function sizeRing() {
     if (!ringEl || !ringH) return;
-    const w = ringH.w * IMG_W, h = ringH.h * state.imgH;
-    const d = Math.max(Math.hypot(w, h) * 1.12 + 14 / state.scale, 40 / state.scale);
+    const w = ringH.w * IMG_W * state.scale;
+    const h = ringH.h * state.imgH * state.scale;
+    const d = Math.max(Math.hypot(w, h) * 1.12 + 14, 40);
     ringEl.style.width = ringEl.style.height = d + "px";
   }
   function placeRing(step) {
@@ -188,8 +216,8 @@
     if (!ringH) { if (ringEl) ringEl.remove(); ringEl = null; return; }
     ringEl = document.createElement("div");
     ringEl.className = "target-ring";
-    ringEl.style.left = (ringH.x + ringH.w / 2) * IMG_W + "px";
-    ringEl.style.top = (ringH.y + ringH.h / 2) * state.imgH + "px";
+    ringEl.style.left = ((ringH.x + ringH.w / 2) * 100) + "%";
+    ringEl.style.top = ((ringH.y + ringH.h / 2) * 100) + "%";
     layer.appendChild(ringEl);
     sizeRing();
   }
@@ -222,7 +250,7 @@
     const { step } = current();
     const h = state.data.hotspots.find((x) => x.id === step.hotspot);
     if (focus !== false && !step.manual) focusHotspot(h);
-    else if (focus !== false) { clampPan(); applyTransform(); }
+    else if (focus !== false) { clampPan(); applyTransform(true); }
   }
 
   function advance() {
@@ -338,7 +366,7 @@
       const my = (arr[0].y + arr[1].y) / 2 - rect.top;
       const wx = (mx - state.tx) / state.scale;
       const wy = (my - state.ty) / state.scale;
-      state.scale = Math.min(3.2, Math.max(0.35, state.scale * factor));
+      state.scale = clampScale(state.scale * factor);
       state.tx = mx - wx * state.scale;
       state.ty = my - wy * state.scale;
       lastDist = d;
@@ -366,15 +394,15 @@
     const wx = (mx - state.tx) / state.scale;
     const wy = (my - state.ty) / state.scale;
     const factor = e.deltaY > 0 ? 0.9 : 1.1;
-    state.scale = Math.min(3.2, Math.max(0.35, state.scale * factor));
+    state.scale = clampScale(state.scale * factor);
     state.tx = mx - wx * state.scale;
     state.ty = my - wy * state.scale;
     clampPan();
     applyTransform();
   }, { passive: false });
 
-  $("zoom-in").onclick = () => { state.scale = Math.min(3.2, state.scale * 1.2); clampPan(); applyTransform(); };
-  $("zoom-out").onclick = () => { state.scale = Math.max(0.35, state.scale / 1.2); clampPan(); applyTransform(); };
+  $("zoom-in").onclick = () => { state.scale = clampScale(state.scale * 1.2); clampPan(); applyTransform(); };
+  $("zoom-out").onclick = () => { state.scale = clampScale(state.scale / 1.2); clampPan(); applyTransform(); };
   $("zoom-reset").onclick = () => { fit(); const { step } = current(); focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot)); };
   $("focus-target").onclick = () => { const { step } = current(); focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot)); };
   $("btn-prev").onclick = goPrev;
@@ -387,27 +415,27 @@
   function fit() {
     const vw = viewport.clientWidth;
     const vh = viewport.clientHeight;
-    state.scale = Math.min(vw / IMG_W, vh / state.imgH) * 0.98;
+    state.scale = fitScale();
     state.tx = (vw - IMG_W * state.scale) / 2;
     state.ty = 0;
     applyTransform();
   }
 
   async function boot() {
-    const [res, mres] = await Promise.all([fetch("./data/sop-flow.json?v=12"), fetch("./js/tiles/meta.json?v=12")]);
+    const [res, mres] = await Promise.all([fetch("./data/sop-flow.json?v=13"), fetch("./js/tiles/meta.json?v=13")]);
     state.data = await res.json();
     META = await mres.json();
-    IMG_W = META.levels[0].w;
-    state.imgH = IMG_W * META.h / META.w;
+    IMG_W = META.w;
+    state.imgH = META.h;
     // safety net: any step without a valid hotspot becomes a manual "我已完成" step
     const ids = new Set(state.data.hotspots.map((h) => h.id));
     state.data.phases.forEach((p) => p.steps.forEach((s) => { if (!s.hotspot || !ids.has(s.hotspot)) s.manual = true; }));
-    img.src = window.__COCKPIT_OVERVIEW || "./assets/cockpit-company-lite.jpg?v=12";
+    img.src = window.__COCKPIT_OVERVIEW || "./assets/cockpit-company-lite.jpg?v=13";
     await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = () => reject(new Error("cockpit image failed")); });
-    img.style.width = IMG_W + "px";
-    img.style.height = state.imgH + "px";
-    tileLayer.style.width = IMG_W + "px";
-    tileLayer.style.height = state.imgH + "px";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    tileLayer.style.width = "100%";
+    tileLayer.style.height = "100%";
     buildPhaseList();
     fit();
     // restore
@@ -444,6 +472,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js?v=12").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=13").catch(() => {});
   }
 })();

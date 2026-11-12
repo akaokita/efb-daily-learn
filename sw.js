@@ -1,4 +1,4 @@
-const CACHE = "efb-learn-v12";
+const CACHE = "efb-learn-v13";
 const ASSETS = [
   "./",
   "./index.html",
