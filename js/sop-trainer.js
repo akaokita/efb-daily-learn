@@ -9,6 +9,7 @@
     tx: 0,
     ty: 0,
     imgH: 14431,
+    userScaled: false,
   };
 
   const $ = (id) => document.getElementById(id);
@@ -63,7 +64,6 @@
     world.style.width = (IMG_W * state.scale) + "px";
     world.style.height = (state.imgH * state.scale) + "px";
     world.style.setProperty("--px", "1px");
-    sizeRing();
     if (immediate) {
       clearTimeout(tileTimer);
       updateTiles();
@@ -126,7 +126,7 @@
           pending.set(key, true);
           const s = document.createElement("script");
           s.dataset.tile = key; s.async = true;
-          s.src = `./js/tiles/t${key}.js?v=13`;
+          s.src = `./js/tiles/t${key}.js?v=14`;
           s.onerror = () => { pending.delete(key); s.remove(); };
           document.head.appendChild(s);
         }
@@ -200,26 +200,6 @@
       });
       layer.appendChild(el);
     }
-    placeRing(step);
-  }
-
-  let ringEl = null, ringH = null;
-  function sizeRing() {
-    if (!ringEl || !ringH) return;
-    const w = ringH.w * IMG_W * state.scale;
-    const h = ringH.h * state.imgH * state.scale;
-    const d = Math.max(Math.hypot(w, h) * 1.12 + 14, 40);
-    ringEl.style.width = ringEl.style.height = d + "px";
-  }
-  function placeRing(step) {
-    ringH = step && !step.manual ? state.data.hotspots.find((x) => x.id === step.hotspot) : null;
-    if (!ringH) { if (ringEl) ringEl.remove(); ringEl = null; return; }
-    ringEl = document.createElement("div");
-    ringEl.className = "target-ring";
-    ringEl.style.left = ((ringH.x + ringH.w / 2) * 100) + "%";
-    ringEl.style.top = ((ringH.y + ringH.h / 2) * 100) + "%";
-    layer.appendChild(ringEl);
-    sizeRing();
   }
 
   function renderCoach() {
@@ -249,7 +229,7 @@
     renderCoach();
     const { step } = current();
     const h = state.data.hotspots.find((x) => x.id === step.hotspot);
-    if (focus !== false && !step.manual) focusHotspot(h);
+    if (focus !== false && !step.manual) focusHotspot(h, !!state.userScaled);
     else if (focus !== false) { clampPan(); applyTransform(true); }
   }
 
@@ -367,6 +347,7 @@
       const wx = (mx - state.tx) / state.scale;
       const wy = (my - state.ty) / state.scale;
       state.scale = clampScale(state.scale * factor);
+      state.userScaled = true;
       state.tx = mx - wx * state.scale;
       state.ty = my - wy * state.scale;
       lastDist = d;
@@ -395,16 +376,25 @@
     const wy = (my - state.ty) / state.scale;
     const factor = e.deltaY > 0 ? 0.9 : 1.1;
     state.scale = clampScale(state.scale * factor);
+    state.userScaled = true;
     state.tx = mx - wx * state.scale;
     state.ty = my - wy * state.scale;
     clampPan();
     applyTransform();
   }, { passive: false });
 
-  $("zoom-in").onclick = () => { state.scale = clampScale(state.scale * 1.2); clampPan(); applyTransform(); };
-  $("zoom-out").onclick = () => { state.scale = clampScale(state.scale / 1.2); clampPan(); applyTransform(); };
-  $("zoom-reset").onclick = () => { fit(); const { step } = current(); focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot)); };
-  $("focus-target").onclick = () => { const { step } = current(); focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot)); };
+  $("zoom-in").onclick = () => { state.scale = clampScale(state.scale * 1.2); state.userScaled = true; clampPan(); applyTransform(); };
+  $("zoom-out").onclick = () => { state.scale = clampScale(state.scale / 1.2); state.userScaled = true; clampPan(); applyTransform(); };
+  $("zoom-reset").onclick = () => {
+    state.userScaled = false;
+    fit();
+    const { step } = current();
+    focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot));
+  };
+  $("focus-target").onclick = () => {
+    const { step } = current();
+    focusHotspot(state.data.hotspots.find(h => h.id === step.hotspot), !!state.userScaled);
+  };
   $("btn-prev").onclick = goPrev;
   $("btn-skip").onclick = skip;
   $("btn-next").onclick = () => advance();
@@ -422,7 +412,7 @@
   }
 
   async function boot() {
-    const [res, mres] = await Promise.all([fetch("./data/sop-flow.json?v=13"), fetch("./js/tiles/meta.json?v=13")]);
+    const [res, mres] = await Promise.all([fetch("./data/sop-flow.json?v=14"), fetch("./js/tiles/meta.json?v=14")]);
     state.data = await res.json();
     META = await mres.json();
     IMG_W = META.w;
@@ -430,7 +420,7 @@
     // safety net: any step without a valid hotspot becomes a manual "我已完成" step
     const ids = new Set(state.data.hotspots.map((h) => h.id));
     state.data.phases.forEach((p) => p.steps.forEach((s) => { if (!s.hotspot || !ids.has(s.hotspot)) s.manual = true; }));
-    img.src = window.__COCKPIT_OVERVIEW || "./assets/cockpit-company-lite.jpg?v=13";
+    img.src = window.__COCKPIT_OVERVIEW || "./assets/cockpit-company-lite.jpg?v=14";
     await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = () => reject(new Error("cockpit image failed")); });
     img.style.width = "100%";
     img.style.height = "100%";
@@ -472,6 +462,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js?v=13").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=14").catch(() => {});
   }
 })();
