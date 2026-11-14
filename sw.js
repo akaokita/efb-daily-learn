@@ -1,4 +1,4 @@
-const CACHE = "efb-learn-v14";
+const CACHE = "efb-learn-v15";
 const ASSETS = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const ASSETS = [
   "./css/cockpit.css",
   "./css/sop-trainer.css",
   "./js/app.js",
+  "./js/gate.js",
   "./js/cockpit.js",
   "./js/cockpit-boot.js",
   "./js/cockpit-scene.js",
