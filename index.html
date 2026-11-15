@@ -8,12 +8,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="B737 EFB 入职每日微课学习辅助。飞行运行以公司现行有效版手册为准。" />
   <meta name="robots" content="noindex, nofollow" />
-  <style>html{background:#0b1220}html:not(.efb-open) body{background:#0b1220}</style>
-  <script src="./js/gate.js?v=15" data-scripts="./js/app.js?v=15"></script>
-  <link rel="manifest" href="./manifest.webmanifest?v=15" />
+  <link rel="manifest" href="./manifest.webmanifest?v=16" />
   <link rel="apple-touch-icon" href="./icons/icon.svg" />
   <link rel="icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./css/app.css?v=15" />
+  <link rel="stylesheet" href="./css/app.css?v=16" />
   <title>B737 EFB 每日微课</title>
 </head>
 <body>
@@ -49,7 +47,7 @@
   <script>
     // Drop stale service-worker caches that can freeze a blank shell after deploys
     (function () {
-      var EXPECT = "efb-learn-v15";
+      var EXPECT = "efb-learn-v16";
       try {
         if (!("serviceWorker" in navigator)) return;
         navigator.serviceWorker.getRegistrations().then(function (regs) {
@@ -65,5 +63,6 @@
       } catch (e) {}
     })();
   </script>
+  <script src="./js/app.js?v=16"></script>
 </body>
 </html>
