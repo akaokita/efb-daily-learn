@@ -1,13 +1,7 @@
 {
-  "name": "B737 EFB 每日微课",
-  "short_name": "EFB微课",
-  "description": "B737 EFB 入职每日微课学习辅助",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0b1220",
-  "theme_color": "#0b1220",
-  "lang": "zh-CN",
-  "icons": [
-    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
-  ]
+  "name": "offline",
+  "short_name": "offline",
+  "start_url": "./",
+  "display": "browser",
+  "icons": []
 }
