@@ -2,67 +2,27 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1220" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="B737 EFB 入职每日微课学习辅助。飞行运行以公司现行有效版手册为准。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="manifest" href="./manifest.webmanifest?v=16" />
-  <link rel="apple-touch-icon" href="./icons/icon.svg" />
-  <link rel="icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./css/app.css?v=16" />
-  <title>B737 EFB 每日微课</title>
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <title>学习页已下线</title>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js?v=17").catch(function () {});
+    }
+  </script>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #0b1220; color: #e8eef8;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    main { max-width: 28rem; text-align: center; }
+    h1 { font-size: 1.25rem; margin: 0 0 8px; }
+    p { margin: 0; color: #9db0d0; line-height: 1.6; }
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <h1 id="app-title">B737 EFB 每日微课</h1>
-    <div class="sub">个人学习辅助 · 以现行 EFB 手册为准</div>
-  </header>
-
   <main>
-
-  <div class="card" style="margin:12px;padding:14px;border-radius:14px;background:#182338;border:1px solid #2a3a55">
-    <div style="font-weight:700;margin-bottom:6px">🕹️ SOP 互动座舱教学</div>
-    <div style="font-size:13px;color:#9db0d0;margin-bottom:10px">基于公司座舱展开图，电源接通→关车逐步点选练习（个人入职学习）。</div>
-    <a href="./sop-trainer.html" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;padding:10px 14px;border-radius:10px;font-weight:650">开始互动教学</a>
-  </div>
-
-    <section class="view active" data-view="today" id="view-today">
-      <div class="card" id="boot-status">正在加载课程数据…</div>
-    </section>
-    <section class="view" data-view="courses" id="view-courses"></section>
-    <section class="view" data-view="review" id="view-review"></section>
-    <section class="view" data-view="me" id="view-me"></section>
-    <section class="view" data-view="lesson" id="view-lesson"></section>
+    <h1>本学习页已下线</h1>
+    <p>该页面不再公开访问。</p>
   </main>
-
-  <nav class="bottom-nav" aria-label="底部导航">
-    <button type="button" data-nav="today" class="active"><span class="ico">📅</span>今日</button>
-    <button type="button" data-nav="courses"><span class="ico">📚</span>课程</button>
-    <button type="button" data-nav="review"><span class="ico">🔁</span>复习</button>
-    <button type="button" data-nav="me"><span class="ico">👤</span>我的</button>
-  </nav>
-
-  <script>
-    // Drop stale service-worker caches that can freeze a blank shell after deploys
-    (function () {
-      var EXPECT = "efb-learn-v16";
-      try {
-        if (!("serviceWorker" in navigator)) return;
-        navigator.serviceWorker.getRegistrations().then(function (regs) {
-          regs.forEach(function (r) { /* keep; app.js will register v3 */ });
-        });
-        if (window.caches && caches.keys) {
-          caches.keys().then(function (keys) {
-            keys.forEach(function (k) {
-              if (k !== EXPECT) caches.delete(k);
-            });
-          });
-        }
-      } catch (e) {}
-    })();
-  </script>
-  <script src="./js/app.js?v=16"></script>
 </body>
 </html>

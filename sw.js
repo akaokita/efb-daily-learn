@@ -1,33 +1,11 @@
-const CACHE = "efb-learn-v16";
-const ASSETS = [
-  "./",
-  "./index.html",
-  "./cockpit.html",
-  "./sop-trainer.html",
-  "./css/app.css",
-  "./css/cockpit.css",
-  "./css/sop-trainer.css",
-  "./js/app.js",
-  "./js/cockpit.js",
-  "./js/cockpit-boot.js",
-  "./js/cockpit-scene.js",
-  "./js/sop-trainer.js",
-  "./js/tiles/overview.js",
-  "./js/tiles/meta.json",
-  "./js/vendor/three.module.js",
-  "./data/lessons.json",
-  "./data/cockpit-scenarios.json",
-  "./data/sop-flow.json",
-  "./manifest.webmanifest",
-  "./icons/icon.svg"
-];
+const CACHE = "efb-learn-v17-offline";
+const ASSETS = ["./", "./index.html", "./sop-trainer.html", "./cockpit.html"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE).then(async (c) => {
       for (const url of ASSETS) {
-        try { await c.add(url); }
-        catch (err) { console.warn("SW cache skip", url, err); }
+        try { await c.add(url); } catch (err) {}
       }
       await self.skipWaiting();
     })
@@ -46,42 +24,18 @@ self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  // never cache cross-origin (Three CDN / Wikimedia)
-  if (url.origin !== self.location.origin) {
-    e.respondWith(fetch(req).catch(() => caches.match(req)));
-    return;
-  }
-  const path = url.pathname;
-  const networkFirst =
-    req.mode === "navigate" ||
-    path.endsWith(".html") ||
-    path.endsWith(".js") ||
-    path.endsWith(".json") ||
-    path.endsWith(".css") ||
-    path.endsWith("/") ||
-    path.endsWith("efb-daily-learn");
-
-  if (networkFirst) {
+  if (url.origin !== self.location.origin) return;
+  if (req.mode === "navigate" || (req.headers.get("accept") || "").includes("text/html")) {
     e.respondWith(
-      fetch(req)
+      fetch("./index.html", { cache: "no-store" })
         .then((res) => {
           const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+          caches.open(CACHE).then((c) => c.put("./index.html", copy)).catch(() => {});
           return res;
         })
-        .catch(() => caches.match(req).then((r) => r || caches.match("./index.html")))
+        .catch(() => caches.match("./index.html"))
     );
     return;
   }
-
-  e.respondWith(
-    caches.match(req).then((r) =>
-      r ||
-      fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
-        return res;
-      })
-    )
-  );
+  e.respondWith(fetch(req, { cache: "no-store" }).catch(() => caches.match(req)));
 });
